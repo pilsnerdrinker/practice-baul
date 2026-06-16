@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>P3 バウル・オブ・アゴニー 練習</title>
+<title>P3 バウル・オブ・アゴニー 練習アプリ</title>
 <style>
   :root{
     --bg:#0c1020; --panel:#151a2e; --panel2:#1e2540; --text:#f5f7ff; --muted:#aeb8d7;
@@ -22,7 +22,7 @@
   button{cursor:pointer;background:#253053;font-weight:700} button:hover{filter:brightness(1.12)}
   .primary{background:#3457d5;border-color:#5572e8}.ghost{background:#141a30}.danger{background:#4a1e28;border-color:#8a3848}
   .linkBtn{display:inline-flex;align-items:center;justify-content:center;border-radius:10px;border:1px solid #445174;background:#141a30;color:var(--text);padding:9px 10px;font-size:14px;font-weight:700;text-decoration:none}.linkBtn:hover{filter:brightness(1.12)}.minorLink{display:inline-flex;align-items:center;color:var(--muted);padding:2px 2px;font-size:12px;text-decoration:none}.minorLink:hover{color:#dbe4ff;text-decoration:underline}.controlSpacer{flex:1 1 auto}
-  .arenaWrap{position:relative;aspect-ratio:1/1;min-height:360px}.arenaWrap svg{width:100%;height:100%;display:block;border-radius:14px;background:#080b14}
+  .arenaWrap{position:relative;aspect-ratio:1/1;min-height:360px}.arenaWrap svg{width:100%;height:100%;display:block;border-radius:14px;background:#080b14}.slideTopNav{pointer-events:none;position:absolute;top:12px;right:12px;display:flex;align-items:center;gap:6px;z-index:3}.slideTopNav button{pointer-events:auto;min-width:34px;height:34px;border-radius:10px;border:1px solid #5970bf;background:rgba(7,10,20,.82);color:#fff;font-weight:900;cursor:pointer}.slideTopNav span{pointer-events:auto;display:inline-flex;align-items:center;justify-content:center;min-width:54px;height:34px;border-radius:10px;border:1px solid #8aa4ff;background:rgba(7,10,20,.82);color:#fff;font-weight:900}.modeButtons{display:flex;gap:8px;flex-wrap:wrap}.modeBtn.active,.strategyBtn.active{outline:2px solid #8fb1ff;box-shadow:0 0 0 3px rgba(111,149,255,.18)}.hiddenSelect{display:none !important}.practiceBar{height:12px;border-radius:999px;background:#18203a;overflow:hidden;border:1px solid #33426a}.practiceFill{height:100%;background:linear-gradient(90deg,#6bdcff,#77f2a3);width:100%;transition:none}.practiceMeta{display:flex;justify-content:space-between;align-items:center;gap:8px;color:#cbd7ff;font-size:13px;margin-bottom:6px}.practiceControls{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.controlStack{display:flex;flex-direction:column;gap:4px}.controlFull{flex-basis:100%}.smallMuted{font-size:12px;color:var(--muted)}.practiceTopArea{margin:0 0 8px}.practiceTopArea.hidden{display:none !important}.practiceCenterOverlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:4}.practiceCenterBox{display:flex;flex-direction:column;align-items:center;gap:12px;pointer-events:none}.practiceCountdownText{font-size:76px;font-weight:900;color:#ffffff;text-shadow:0 0 18px rgba(107,220,255,.55),0 0 32px rgba(107,220,255,.28)}.practiceStartBtnCenter{pointer-events:auto;min-width:160px;min-height:54px;border-radius:999px;border:2px solid #8aa4ff;background:rgba(7,10,20,.88);box-shadow:0 0 0 3px rgba(111,149,255,.16),0 0 18px rgba(107,220,255,.20);font-size:18px}.practiceStartBtnCenter:hover{filter:brightness(1.12)}.practiceCastGlow{filter:url(#blueGlow)}.practiceLogBox{font-size:13px;line-height:1.7;background:#0e1428;border:1px solid var(--line);border-radius:12px;padding:10px;margin-top:8px}.practiceLogBox b{display:block;margin-bottom:4px}.practiceLogItem{padding:2px 0}.practiceFinishedBanner{margin-top:8px;padding:8px 10px;border-radius:10px;border:1px solid #3f547f;background:#10162a;color:#dcebff}.practiceControls button{min-height:40px}.partyList.debuffsHidden .partyMark{display:none}.partyList.debuffsHidden .partyRow{grid-template-rows:auto}.partyList.debuffsHidden{padding:7px 8px}
   .partyList{display:grid;grid-template-columns:repeat(8,minmax(74px,1fr));gap:6px;margin:0 0 10px;background:rgba(7,10,20,.55);border:1px solid rgba(185,197,255,.28);border-radius:12px;padding:8px;box-shadow:0 8px 18px rgba(0,0,0,.18)}
   .partyRow{display:grid;grid-template-rows:auto 1fr;gap:4px;align-items:stretch;font-size:11px;line-height:1.2;min-width:0}
   .partyRole{font-weight:900;color:#eef2ff;text-align:center;letter-spacing:.02em;border-radius:7px;padding:3px 4px;background:rgba(255,255,255,.06);cursor:pointer;user-select:none}.partyRow{cursor:pointer;border-radius:10px;padding:3px}.partyRow:hover .partyRole{filter:brightness(1.18);outline:1px solid rgba(255,255,255,.28)}.partyRole.me{color:#fff;background:#3457d5}
@@ -60,12 +60,12 @@
 </head>
 <body>
 <header>
-  <h1>P3 バウル・オブ・アゴニー 練習</h1>
+  <h1>P3 バウル・オブ・アゴニー 練習アプリ</h1>
   <div class="headerLinks">
     <a class="linkBtn" href="https://github.com/pilsnerdrinker/practice-baul#readme" target="_blank" rel="noopener noreferrer">使い方・仕様（README）を見る</a>
     <a class="minorLink" href="https://pilsnerdrinker.github.io/raidshelf/" target="_blank" rel="noopener noreferrer">他の練習ページ：raidshelf</a>
   </div>
-
+  <div class="sub hidden" aria-hidden="true"></div>
 </header>
 <main>
   <section class="card">
@@ -75,15 +75,32 @@
     </div>
     <div id="baulControls" class="controls">
       <label>自分ロール <select id="roleSelect"></select></label>
-      <label>方式 <select id="strategySelect"><option value="yanTLB">ヤーン（TLB3）式</option><option value="yanDN">ヤーン（DN/正攻法）式</option></select></label>
-      <label>表示 <select id="modeSelect"><option value="normal">Normal：選択肢</option><option value="hard" selected>Hard：立ち位置ボタン</option></select></label>
       <button class="primary" id="newScenario">新しい問題</button>
+      <div class="controlStack controlFull">
+        <div class="smallMuted">方式</div>
+        <div class="modeButtons" id="strategyButtons">
+          <button type="button" class="ghost strategyBtn active" data-strategy="yanTLB">ヤーン（TLB3）式</button>
+          <button type="button" class="ghost strategyBtn" data-strategy="yanDN">ヤーン（DN/正攻法）式</button>
+          <button type="button" class="ghost strategyBtn" data-strategy="poikos">Poikos式</button>
+        </div>
+        <label class="hiddenSelect">方式 <select id="strategySelect"><option value="yanTLB">ヤーン（TLB3）式</option><option value="yanDN">ヤーン（DN/正攻法）式</option><option value="poikos">Poikos式</option></select></label>
+      </div>
+      <div class="controlStack controlFull">
+        <div class="smallMuted">表示</div>
+        <div class="modeButtons">
+          <button type="button" class="ghost modeBtn" id="modeBtnNormal">ギミック理解</button>
+          <button type="button" class="ghost modeBtn" id="modeBtnHard">位置確認</button>
+          <button type="button" class="ghost modeBtn active" id="modeBtnPractice">実践練習</button>
+        </div>
+        <label class="hiddenSelect">表示 <select id="modeSelect"><option value="normal">Normal：選択肢</option><option value="hard" selected>Hard：立ち位置ボタン</option></select></label>
+      </div>
     </div>
     <div id="ultimaControls" class="controls hidden">
       <label>サイコロ <select id="diceSelect"></select></label>
       <button class="primary" id="newUltima">新しい問題</button>
     </div>
-    <div id="partyList" class="partyList" aria-label="パーティーリスト（ロールをクリックして自分ロールを選択）"></div><div class="arenaWrap"><svg id="arena" viewBox="0 0 600 600" aria-label="arena"></svg></div>
+    <div id="partyList" class="partyList" aria-label="パーティーリスト（ロールをクリックして自分ロールを選択）"></div><div id="practiceTopArea" class="practiceTopArea hidden"></div><div class="arenaWrap"><div id="slideTopNav" class="slideTopNav"><button type="button" id="slidePrevTop">＜</button><span id="slideCountTop">1/6</span><button type="button" id="slideNextTop">＞</button></div><div id="practiceCenterOverlay" class="practiceCenterOverlay hidden"></div><svg id="arena" viewBox="0 0 600 600" aria-label="arena"></svg></div>
+    <div id="practiceMapControls" class="controls hidden"></div>
     <div class="legend">
       <span class="chip"><span class="dot" style="background:var(--fire)"></span>炎：小円 / 炎クリはドーナツ</span>
       <span class="chip"><span class="dot" style="background:var(--water)"></span>水：ドーナツ / 水クリは小円</span>
@@ -97,7 +114,7 @@
       <button class="ghost" id="mapNewProblem">別の問題</button>
       <label class="chip" style="gap:6px;cursor:pointer"><input type="checkbox" id="autoAdvanceOnCorrect"> 正解したらそのまま次へ</label>
     </div>
-    <div class="footnote">このプロトタイプでは、炎水持ちは「反対属性のクリスタル攻撃で風解除」、風のみは「真空波で解除」として単純化しています。炎・水はそれぞれTHから1名、DPSから1名ずつ付与として生成します。</div>
+    <div class="footnote">炎水持ちは「反対属性のクリスタル攻撃で風解除」、風のみは「真空波で解除」として表示しています。炎・水はそれぞれTHから1名、DPSから1名ずつ付与として生成します。</div>
   </section>
 
   <section class="card" id="baulPanel">
@@ -148,6 +165,61 @@ const clockwiseNext = d => dirs[(dirs.indexOf(d)+1)%8];
 const rand = arr => arr[Math.floor(Math.random()*arr.length)];
 const shuffle = arr => [...arr].sort(()=>Math.random()-.5);
 let state={}, answers={}, ultima={}, ultimaAnswers={}, normalStep=0, hardStep=0, hardClicks=[], hardImplosionClicks=[], hardShowAnswer=false, hardSelectedChoice="", hardJudged=false, hardJudgeCorrect=false, hardAutoAdvanceTimer=null, showNormalAnswer=false, normalJudged=false, showUltimaAnswer=false;
+let displayMode='practice';
+let practiceRunning=false, practicePaused=false, practiceStarted=false, practiceCountdown=0, practiceTimeLeft=12000, practiceDuration=12000, practiceTimer=null, practiceCountdownTimer=null;
+let practicePhase='idle', practiceStepRemaining=0, practiceRevealRemaining=1000, practiceFinishRemaining=3000, practiceCountdownRemaining=3000, practiceRaf=null, practiceLastTs=0;
+let practiceLogs=[];
+const practiceStepDurations=[7000,17000,7000,3000,5000,5000];
+const practiceAnswerDuration=1000;
+const practiceLogDuration=3000;
+const roleSelect = document.getElementById('roleSelect');
+const strategySelect = document.getElementById('strategySelect');
+const strategyBtns = [...document.querySelectorAll('.strategyBtn')];
+const modeSelect = document.getElementById('modeSelect');
+const modeBtnNormal = document.getElementById('modeBtnNormal');
+const modeBtnHard = document.getElementById('modeBtnHard');
+const modeBtnPractice = document.getElementById('modeBtnPractice');
+const slideTopNav = document.getElementById('slideTopNav');
+const slidePrevTop = document.getElementById('slidePrevTop');
+const slideNextTop = document.getElementById('slideNextTop');
+const slideCountTop = document.getElementById('slideCountTop');
+const result = document.getElementById('result');
+const tabBaul = document.getElementById('tabBaul');
+const tabUltima = document.getElementById('tabUltima');
+const baulPanel = document.getElementById('baulPanel');
+const ultimaPanel = document.getElementById('ultimaPanel');
+const baulControls = document.getElementById('baulControls');
+const ultimaControls = document.getElementById('ultimaControls');
+const newScenario = document.getElementById('newScenario');
+const checkBtn = document.getElementById('checkBtn');
+const answerBtn = document.getElementById('answerBtn');
+const quizNextBtn = document.getElementById('quizNextBtn');
+const resetBtn = document.getElementById('resetBtn');
+const newUltima = document.getElementById('newUltima');
+const checkUltima = document.getElementById('checkUltima');
+const answerUltima = document.getElementById('answerUltima');
+const mapPrev = document.getElementById('mapPrev');
+const mapCheck = document.getElementById('mapCheck');
+const mapShowAnswer = document.getElementById('mapShowAnswer');
+const mapNext = document.getElementById('mapNext');
+const mapNewProblem = document.getElementById('mapNewProblem');
+const partyList = document.getElementById('partyList');
+const arena = document.getElementById('arena');
+const mapNavControls = document.getElementById('mapNavControls');
+const practiceMapControls = document.getElementById('practiceMapControls');
+const panelActionControls = checkBtn ? checkBtn.closest('.controls') : null;
+const practiceTopArea = document.getElementById('practiceTopArea');
+const practiceCenterOverlay = document.getElementById('practiceCenterOverlay');
+const debuffTable = document.getElementById('debuffTable');
+const questions = document.getElementById('questions');
+const hardPractice = document.getElementById('hardPractice');
+const baulPanelTitle = document.getElementById('baulPanelTitle');
+const scenarioSummary = document.getElementById('scenarioSummary');
+const autoAdvanceOnCorrect = document.getElementById('autoAdvanceOnCorrect');
+const diceSelect = document.getElementById('diceSelect');
+const ultimaSummary = document.getElementById('ultimaSummary');
+const ultimaResult = document.getElementById('ultimaResult');
+const ultimaQuestions = document.getElementById('ultimaQuestions');
 
 function resetHardJudgeState(){
   hardJudged=false;
@@ -171,46 +243,94 @@ function maybeAutoAdvanceHard(){
   }
 }
 
+function updateStrategyButtons(){
+  strategyBtns.forEach(btn=>btn.classList.toggle('active', btn.dataset.strategy===strategySelect.value));
+}
+function setStrategy(value, announce=true){
+  if(!strategySelect) return;
+  strategySelect.value=value;
+  localStorage.setItem('p3baulStrategy', value);
+  updateStrategyButtons();
+  hardSelectedChoice='';
+  hardShowAnswer=false;
+  resetHardJudgeState();
+  practiceLogs=[];
+  resetPracticeState(true);
+  renderAll();
+  if(announce) result.textContent='方式を変更しました。現在の場面のまま続行できます。';
+}
+function currentSlideStep(){
+  return displayMode==='normal' ? Math.min(normalStep,5) : Math.min(hardStep,5);
+}
+function gotoPrevSlide(){
+  if(displayMode==='normal'){
+    if(normalStep>0){ normalStep--; showNormalAnswer=false; normalJudged=false; renderAll(); result.textContent='前のスライドへ戻りました。'; }
+    return;
+  }
+  if(hardStep>0){
+    hardStep--; hardShowAnswer=false; hardSelectedChoice=''; resetHardJudgeState(); if(hardStep===2) hardImplosionClicks=[]; resetPracticeState(true); renderAll(); result.textContent='前のスライドへ戻りました。';
+  }
+}
+function gotoNextSlide(){
+  if(displayMode==='normal'){
+    if(normalStep<5){ normalStep++; showNormalAnswer=false; normalJudged=false; renderAll(); result.textContent='次のスライドへ進みました。'; }
+    return;
+  }
+  if(hardStep<5){ hardStep++; hardShowAnswer=false; hardSelectedChoice=''; resetHardJudgeState(); if(hardStep===2) hardImplosionClicks=[]; resetPracticeState(true); renderAll(); result.textContent='次のスライドへ進みました。'; }
+}
+
 function setup(){
   roleSelect.innerHTML = roles.map(r=>`<option>${r}</option>`).join('');
   diceSelect.innerHTML = [1,2,3,4,5,6,7,8].map(n=>`<option>${n}</option>`).join('');
   roleSelect.value = localStorage.getItem('p3role') || 'D3';
-  modeSelect.value = 'hard';
+  const validStrategies = ['yanTLB','yanDN','poikos'];
+  const savedStrategy = localStorage.getItem('p3baulStrategy');
+  strategySelect.value = validStrategies.includes(savedStrategy) ? savedStrategy : 'yanTLB';
+  const validDisplayModes = ['normal','hard','practice'];
+  const savedDisplayMode = localStorage.getItem('p3baulDisplayMode');
+  displayMode = validDisplayModes.includes(savedDisplayMode) ? savedDisplayMode : 'practice';
+  modeSelect.value = displayMode==='normal' ? 'normal' : 'hard';
+  // 初回はTLB3式の実践練習。保存済みの表示/方式があればそちらを復元する。
+  modeBtnNormal.onclick=()=>{ if(displayMode!=='normal'){ normalStep = Math.min(currentSlideStep(),5); resetPracticeState(true); setDisplayMode('normal'); result.textContent='ギミック理解に切り替えました。'; } };
+  modeBtnHard.onclick=()=>{ if(displayMode!=='hard'){ hardStep = Math.min(currentSlideStep(),5); resetPracticeState(true); setDisplayMode('hard'); result.textContent='位置確認に切り替えました。'; } };
+  modeBtnPractice.onclick=()=>{ if(displayMode!=='practice'){ hardStep = Math.min(currentSlideStep(),5); resetPracticeState(true); setDisplayMode('practice'); result.textContent='実践練習に切り替えました。'; } };
+  strategyBtns.forEach(btn=>btn.onclick=()=>{ if(strategySelect.value!==btn.dataset.strategy) setStrategy(btn.dataset.strategy); });
+  slidePrevTop.onclick=()=>gotoPrevSlide();
+  slideNextTop.onclick=()=>gotoNextSlide();
   roleSelect.onchange=()=>{
     localStorage.setItem('p3role', roleSelect.value);
     hardSelectedChoice="";
     hardShowAnswer=false;
     resetHardJudgeState();
+    resetPracticeState(true);
     renderAll();
     result.textContent='ロールを変更しました。現在の場面のまま続行できます。';
   };
-  strategySelect.onchange=()=>{
-    hardSelectedChoice="";
-    hardShowAnswer=false;
-    resetHardJudgeState();
-    renderAll();
-    result.textContent='方式を変更しました。現在の場面のまま続行できます。';
-  };
+  strategySelect.onchange=()=>{ updateStrategyButtons(); setStrategy(strategySelect.value); };
+  updateStrategyButtons();
   modeSelect.onchange=()=>{
-    if(modeSelect.value==='hard'){
-      hardStep = Math.min(normalStep, 5);
-    } else {
+    // 非表示セレクト。表示切替は上の3ボタン側で行う。
+    if(modeSelect.value==='normal'){
       normalStep = Math.min(hardStep, 5);
       showNormalAnswer = false;
       normalJudged = false;
+      setDisplayMode('normal');
+    } else {
+      hardStep = Math.min(normalStep, 5);
+      setDisplayMode(isPracticeView() ? 'practice' : 'hard');
     }
     hardSelectedChoice="";
     hardShowAnswer=false;
     hardImplosionClicks=[];
     resetHardJudgeState();
+    resetPracticeState(true);
     renderAll();
-    result.textContent=`${modeSelect.value==='hard'?'Hard':'Normal'}に切り替えました。現在の場面のまま続行できます。`;
   };
-  newScenario.onclick=genScenario;
-  checkBtn.onclick=()=>{ if(modeSelect.value==='hard'){ submitHardSelected(); } else checkAnswers(); };
-  answerBtn.onclick=()=>{ if(modeSelect.value==='hard'){ hardShowAnswer=true; renderHardPractice(); renderArena(); result.textContent = hardStep<6 ? hardExpectedText(hardStep) : '完了済みです。'; } else showAnswers(); };
+  newScenario.onclick=()=>{ resetPracticeState(true); genScenario(); };
+  checkBtn.onclick=()=>{ if(isMapLikeView()){ submitHardSelected(); } else checkAnswers(); };
+  answerBtn.onclick=()=>{ if(isMapLikeView()){ hardShowAnswer=true; renderHardPractice(); renderArena(); result.textContent = hardStep<6 ? hardExpectedText(hardStep) : '完了済みです。'; } else showAnswers(); };
   quizNextBtn.onclick=()=>{
-    if(modeSelect.value!=='normal') return;
+    if(!isNormalView()) return;
     if(normalStep<5){
       normalStep++;
       showNormalAnswer=false;
@@ -231,25 +351,25 @@ function setup(){
   // マップ下ボタン
   mapPrev.onclick=()=>{
     if(tabUltima.classList.contains('active')) return;
-    if(modeSelect.value==='hard'){
+    if(isMapLikeView()){
       if(hardStep===2 && hardImplosionClicks.length>0){
         hardImplosionClicks.pop(); hardSelectedChoice=''; hardShowAnswer=false; resetHardJudgeState(); renderAll();
         result.textContent='インプロージョンの1手を戻しました。';
       } else if(hardStep>0){
-        hardStep--; hardClicks.pop(); hardSelectedChoice=''; hardShowAnswer=false; resetHardJudgeState(); renderAll();
+        hardStep--; hardClicks.pop(); hardSelectedChoice=''; hardShowAnswer=false; resetHardJudgeState(); resetPracticeState(true); renderAll();
         result.textContent='1手戻しました。';
       }
     } else if(normalStep>0){
-      normalStep--; showNormalAnswer=false; normalJudged=false; renderAll(); result.textContent='前の場面へ戻りました。';
+      normalStep--; showNormalAnswer=false; normalJudged=false; resetPracticeState(true); renderAll(); result.textContent='前の場面へ戻りました。';
     }
   };
   mapCheck.onclick=()=>{
     if(tabUltima.classList.contains('active')) return;
-    if(modeSelect.value==='hard') submitHardSelected(); else checkAnswers();
+    if(isMapLikeView()) submitHardSelected(); else checkAnswers();
   };
   mapShowAnswer.onclick=()=>{
     if(tabUltima.classList.contains('active')) return;
-    if(modeSelect.value==='hard'){
+    if(isMapLikeView()){
       hardShowAnswer=true; renderHardPractice(); renderArena();
       result.textContent = hardStep<6 ? hardExpectedText(hardStep) : '完了済みです。';
     } else {
@@ -258,7 +378,7 @@ function setup(){
   };
   mapNext.onclick=()=>{
     if(tabUltima.classList.contains('active')) return;
-    if(modeSelect.value==='hard'){
+    if(isMapLikeView()){
       if(!(hardJudged || hardShowAnswer)){
         result.textContent='Hardで次へ進むには、判定を押すか「正解を表示」を押してください。';
         return;
@@ -268,13 +388,13 @@ function setup(){
         result.textContent = hardStep<6 ? '次の場面へ進みました。' : 'Hard通し終了。完了画面を表示しています。';
       }
     } else if(normalStep<5){
-      normalStep++; showNormalAnswer=false; normalJudged=false; renderAll(); result.textContent='次の場面へ進みました。';
+      normalStep++; showNormalAnswer=false; normalJudged=false; resetPracticeState(true); renderAll(); result.textContent='次の場面へ進みました。';
     } else {
       result.textContent='Normal通し終了です。別の問題で再挑戦できます。';
     }
   };
-  mapNewProblem.onclick=()=>{ genScenario(); result.textContent='別の問題に切り替えました。'; };
-  genScenario(); genUltima(); switchTab('baul');
+  mapNewProblem.onclick=()=>{ resetPracticeState(true); genScenario(); result.textContent='別の問題に切り替えました。'; };
+  genScenario(); genUltima(); switchTab('baul'); setDisplayMode(displayMode);
 }
 function switchTab(t){
   const isB=t==='baul';
@@ -284,7 +404,7 @@ function switchTab(t){
   renderArena();
 }
 function genScenario(){
-  answers={}; normalStep=0; hardStep=0; hardClicks=[]; hardImplosionClicks=[]; hardShowAnswer=false; hardSelectedChoice=""; showNormalAnswer=false; normalJudged=false; resetHardJudgeState();
+  answers={}; normalStep=0; hardStep=0; hardClicks=[]; hardImplosionClicks=[]; hardShowAnswer=false; hardSelectedChoice=""; showNormalAnswer=false; normalJudged=false; practiceLogs=[]; resetHardJudgeState();
   // クリスタルは1/2/3/4マーカーのいずれかに出現。炎と水は対角、風の対角は空き。
   const fireDir = rand(crystalDirs);
   const waterDir = opposite(fireDir);
@@ -317,15 +437,16 @@ function getPlayerCorrect(role){
   else { category='風のみ'; timing='真空波'; useCrystal='風クリスタル/真空波'; arm='しない'; }
   return {earlyLabel, firstCrystal, receiver, category, timing, useCrystal, arm};
 }
-function renderAll(){ renderArena(); renderPartyList(); renderQuestions(); renderHardPractice(); renderDebuffTable(); renderSummary(); }
+function renderAll(){ renderArena(); renderPartyList(); renderQuestions(); renderHardPractice(); renderPracticeTopArea(); renderPracticeMapControls(); renderPracticeCenterOverlay(); renderDebuffTable(); renderSummary(); updateSlideTopNav(); if(mapNavControls) mapNavControls.classList.toggle('hidden', isPracticeView()); if(panelActionControls) panelActionControls.classList.toggle('hidden', isPracticeView()); }
 function renderSummary(){
+  if(!state.players || !state.players[roleSelect.value]) return;
   const me=roleSelect.value, c=getPlayerCorrect(me);
-  const hard=modeSelect.value==='hard';
-  const stratLabel = strategySelect.options[strategySelect.selectedIndex].text;
-  if(baulPanelTitle) baulPanelTitle.textContent = hard ? 'バウル立ち位置練習' : 'バウル理解クイズ';
+  const hard=isMapLikeView();
+  const stratLabel = strategyLabel();
+  if(baulPanelTitle) baulPanelTitle.textContent = isPracticeView() ? 'バウル実践練習' : (hard ? 'バウル位置確認' : 'バウルギミック理解');
   if(hard){
     const steps=phaseNames();
-    scenarioSummary.innerHTML = `方式：<b>${stratLabel}</b> / Hard ${hardStep+1}/6：<b>${steps[hardStep]||'完了'}</b> / 自分：<b>${me}</b> / 丸ボタン回答`;
+    scenarioSummary.innerHTML = `方式：<b>${stratLabel}</b> / ${isPracticeView()?'実践練習':'位置確認'} ${Math.min(hardStep+1,6)}/6：<b>${steps[hardStep]||'完了'}</b> / 自分：<b>${me}</b> / 丸ボタン回答`;
   } else {
     const steps=phaseNames();
     scenarioSummary.innerHTML = `方式：<b>${stratLabel}</b> / Step ${normalStep+1}/6：<b>${steps[normalStep]||'完了'}</b><br>`+
@@ -340,8 +461,26 @@ function partyDebuffText(p){
   if(p.element==='water') return `<span class="debuffBox water">水${p.duration}</span>${wind}`;
   return wind;
 }
+function shouldShowPracticePartyList(){
+  return true;
+}
+function shouldShowPracticeDebuffs(){
+  if(!isPracticeView()) return true;
+  return practicePhase==='active' || practicePhase==='reveal' || practicePhase==='finished';
+}
+function practiceStateText(){
+  if(!isPracticeView()) return "";
+  if(practicePhase==='countdown') return `開始まで ${practiceCountdown}`;
+  if(practiceRunning && practicePhase==='active') return "進行中";
+  if(practiceRunning && practicePhase==='reveal') return "正解表示中";
+  if(practiceRunning && practicePhase==='finished') return "ログ表示中";
+  if(practicePaused) return "一時停止中";
+  return practiceStarted ? "停止中" : "未開始";
+}
 function renderPartyList(){
   if(!state.players || !partyList) return;
+  partyList.classList.toggle('hidden', !shouldShowPracticePartyList());
+  partyList.classList.toggle('debuffsHidden', !shouldShowPracticeDebuffs());
   partyList.innerHTML = roles.map(r=>{
     const p=state.players[r];
     const cls=p.element==='fire'?'fire':p.element==='water'?'water':'wind';
@@ -384,7 +523,8 @@ function normalPositionChoiceBlock(){
   }).join('')}</div><div class="muted" style="margin-top:6px">Normalでは「判定」または「正解を表示」を押すと正解が緑で表示されます。Hardではマップ上の○を選んで判定します。</div></div>`;
 }
 function strategyNote(){
-  return isYanDN()
+  if(isPoikos()) return 'Poikos式：Poikos準拠の位置をもとにした処理。';
+  return isDnLike() && !isPoikos()
     ? 'ヤーン（DN/正攻法）式：デバフ・秒数・優先度で処理する方式。'
     : 'ヤーン（TLB3）式：風クリスタルと水クリスタル基準のロール固定位置式。';
 }
@@ -426,7 +566,10 @@ function tlbPositionLabel(role, step=0){
 }
 
 function isYanDN(){ return strategySelect && strategySelect.value==='yanDN'; }
+function isPoikos(){ return strategySelect && strategySelect.value==='poikos'; }
+function isDnLike(){ return isYanDN() || isPoikos(); }
 function strategyLabel(){
+  if(isPoikos()) return 'Poikos式';
   return isYanDN() ? 'ヤーン（DN/正攻法）式' : 'ヤーン（TLB3）式';
 }
 function dnPriorityIndex(role){ return ["MT","ST","H1","H2","D1","D2","D3","D4"].indexOf(role); }
@@ -515,15 +658,73 @@ function dnFinalAnswer(role){
   }
   return '';
 }
+
+function poikosWindOnlyDPS(){
+  const order=['D4','D3','D2','D1'];
+  return roles.filter(r=>state.players[r].element==='windOnly' && r.startsWith('D')).sort((a,b)=>order.indexOf(a)-order.indexOf(b));
+}
+function poikosResolveAnswer(role, resolvingElement){
+  const p = state.players[role];
+  if(p.element===resolvingElement) return role.startsWith('D') ? '発動クリ風側' : '発動クリ反風側';
+  if(p.element!=='windOnly') return '待機位置';
+  const th=dnWindOnlyTH(), dps=poikosWindOnlyDPS();
+  if(role===th[0]) return '風左1';
+  if(role===th[1]) return '風左2';
+  if(role===dps[0]) return '風右1';
+  if(role===dps[1]) return '風右2';
+  return '風左1';
+}
+function poikosRolesForAnswer(phase, answer){
+  const resolving = phase===1 ? state.first : secondElement();
+  const resolvingRoles = dnMembersOfElement(resolving);
+  const waiting = roles.filter(r=>state.players[r].element===oppositeElement(resolving)).sort((a,b)=>dnPriorityIndex(a)-dnPriorityIndex(b));
+  const th=dnWindOnlyTH(), dps=poikosWindOnlyDPS();
+  const map={
+    '発動クリ風側': resolvingRoles.filter(r=>r.startsWith('D')),
+    '発動クリ反風側': resolvingRoles.filter(r=>!r.startsWith('D')),
+    '待機位置': waiting,
+    '風左1': th[0]?[th[0]]:[],
+    '風左2': th[1]?[th[1]]:[],
+    '風右1': dps[0]?[dps[0]]:[],
+    '風右2': dps[1]?[dps[1]]:[]
+  };
+  return map[answer]||[];
+}
+function poikosAnswerLabel(phase, answer, fallback){
+  const rs = poikosRolesForAnswer(phase, answer);
+  return rs.length ? rs.join('/') : fallback;
+}
+function poikosOrderedRoles(windOnly){
+  const list = roles.filter(r=>windOnly ? state.players[r].element==='windOnly' : state.players[r].element!=='windOnly');
+  const healer = list.filter(r=>['H1','H2'].includes(r)).sort((a,b)=>dnPriorityIndex(a)-dnPriorityIndex(b));
+  const tank = list.filter(r=>['MT','ST'].includes(r)).sort((a,b)=>dnPriorityIndex(a)-dnPriorityIndex(b));
+  const melee = list.filter(r=>['D1','D2'].includes(r)).sort((a,b)=>dnPriorityIndex(a)-dnPriorityIndex(b));
+  const ranged = list.filter(r=>['D3','D4'].includes(r)).sort((a,b)=>dnPriorityIndex(a)-dnPriorityIndex(b));
+  const ordered=[...healer,...tank,...melee,...ranged];
+  while(ordered.length<4) ordered.push('');
+  return ordered.slice(0,4);
+}
+function poikosFinalAnswer(role){
+  const outer=poikosOrderedRoles(true), inner=poikosOrderedRoles(false);
+  const slots=['外列1','外列2','外列3','外列4','内列1','内列2','内列3','内列4'];
+  const map={
+    '外列1':outer[0]||'','外列2':outer[1]||'','外列3':outer[2]||'','外列4':outer[3]||'',
+    '内列1':inner[0]||'','内列2':inner[1]||'','内列3':inner[2]||'','内列4':inner[3]||''
+  };
+  for(const s of slots){ if(map[s]===role) return s; }
+  return '';
+}
 function lpSide(role){
   return ['MT','H1','D1','D2'].includes(role) ? 'カオス側' : 'エクスデス側';
 }
 function phaseNames(){
+  if(isPoikos()) return ['MT組/ST組分かれ','1回目 火水＋風処理','インプロージョン安置','2回目 火水＋風処理','真空波前準備','真空波＋2人受け'];
   if(isYanDN()) return ['MT組/ST組分かれ','1回目 炎水＋風処理','インプロージョン安置','2回目 炎水＋風処理','真空波前準備','真空波＋2人受け'];
   return ['MT組/ST組分かれ','1回目処理 / TLB固定位置','インプロージョン安置','2回目処理 / 2枚目と同じ','真空波前準備','真空波/TLB3'];
 }
 function tlbPhaseNames(){ return phaseNames(); }
 function getNormalStepSpec(){
+  if(isPoikos()) return getNormalStepSpecPoikos();
   return isYanDN() ? getNormalStepSpecYanDN() : getNormalStepSpecYanTLB();
 }
 function getNormalStepSpecYanTLB(){
@@ -657,8 +858,74 @@ function getNormalStepSpecYanDN(){
   ];
   return specs[normalStep] || null;
 }
+
+function getNormalStepSpecPoikos(){
+  const me=roleSelect.value;
+  const first=state.first;
+  const second=secondElement();
+  const firstJ=elementJa(first), secondJ=elementJa(second);
+  const imp=state.implosion;
+  const impFirst=imp==='ホリゾンタル'?'前後安置':'左右安置';
+  const impSecond=imp==='ホリゾンタル'?'左右安置':'前後安置';
+  const specs=[
+    {
+      title:'Step 1：MT組 / ST組分かれ',
+      help:'Poikos式でも最初はMT組 / ST組で各ボス下に分かれる。',
+      qs:[
+        {key:'p_lp', title:'カオス側の基本担当は？', choices:['MT・H1・D1・D2','ST・H2・D3・D4'], correct:'MT・H1・D1・D2'},
+        {key:'p_side', title:`${me}が最初に入る側は？`, choices:['カオス側','エクスデス側'], correct:lpSide(me)}
+      ]
+    },
+    {
+      title:`Step 2：1回目 ${firstJ}処理`,
+      help:'先デバフ2人は先クリスタルを90度ずれた位置で処理し、風クリ側がDPS、反対側がタンヒラ。遅デバフ2人は先デバフTH側の近くで待機。風デバフ4人は風クリ外周側で2:2に分かれて受ける。',
+      qs:[
+        {key:'p_firstElem', title:'1回目に先に発動する属性は？', choices:['炎','水'], correct:firstJ},
+        {key:'p_ex', title:'エクスデスを重ねる先は？', choices:['遅い属性のクリスタル','早い属性のクリスタル','中央'], correct:'遅い属性のクリスタル'},
+        {key:'p_my1', title:`${me}の1回目の役割は？`, choices:hardChoiceOptions(1), correct: hardExpectedChoice(1)}
+      ]
+    },
+    {
+      title:`Step 3：インプロージョン（${imp}）`,
+      help:'3枚目はそのまま。詠唱を見てX字4分割の安置を選ぶ。',
+      qs:[
+        {key:'p_imp1', title:`${imp}の安置順は？`, choices:[`最初${impFirst}→次${impSecond}`,`最初${impSecond}→次${impFirst}`], correct:`最初${impFirst}→次${impSecond}`},
+        {key:'p_imp2', title:'この場面で確認するものは？', choices:['詠唱と次の散開位置','アルテマブラスターだけ','何も見なくてよい'], correct:'詠唱と次の散開位置'}
+      ]
+    },
+    {
+      title:`Step 4：2回目 ${secondJ}処理`,
+      help:'後デバフ2人が後クリスタルを90度ずれた位置で処理し、先デバフ2人はTH側近くで待機。風クリ4人は2枚目と同じ配置。',
+      qs:[
+        {key:'p_secondElem', title:'2回目に発動する属性は？', choices:['炎','水'], correct:secondJ},
+        {key:'p_secondRule', title:'2回目の基本は？', choices:['後発デバフ持ちが後発クリを処理','全員中央集合','D3のみ移動'], correct:'後発デバフ持ちが後発クリを処理'},
+        {key:'p_my2', title:`${me}の2回目の位置確認`, choices:hardChoiceOptions(3), correct: hardExpectedChoice(3)}
+      ]
+    },
+    {
+      title:'Step 5：真空波前準備',
+      help:'Poikos式5枚目ではカオスをフィールド中央に置く。',
+      qs:[
+        {key:'p_st2', title:'D3の主な役割は？', choices:['アンブラスマッシュ誘導','中央集合','ヒール専念'], correct:'アンブラスマッシュ誘導'},
+        {key:'p_d3', title:'カオスの基本位置は？', choices:['フィールド中央','風クリスタル上','炎クリスタル上'], correct:'フィールド中央'},
+        {key:'p_my5', title:`${me}の真空波前の役割は？`, choices:['D3誘導','真空波ノックバック受け','アムレン/堅実'], correct: hardExpectedChoice(4)}
+      ]
+    },
+    {
+      title:'Step 6：真空波後',
+      help:'カオスのタゲサ上に風のみ4人、少し中心側に残り4人を、左からヒラ→タンク→近接→遠隔の順で並べる。',
+      qs:[
+        {key:'p_final1', title:'外側列に入るのは？', choices:['風デバフしかつかなかった4人','炎水デバフがついた4人','D3だけ'], correct:'風デバフしかつかなかった4人'},
+        {key:'p_final2', title:'各列の並び順は？', choices:['ヒラ→タンク→近接→遠隔','タンク→ヒラ→近接→遠隔','近接→遠隔→タンク→ヒラ'], correct:'ヒラ→タンク→近接→遠隔'},
+        {key:'p_final3', title:`${me}の最終位置は？`, choices:hardChoiceOptions(5), correct: hardExpectedChoice(5)}
+      ]
+    }
+  ];
+  return specs[normalStep] || null;
+}
+
 function renderQuestions(){
-  const hard=modeSelect.value==='hard';
+  const hard=isMapLikeView();
   if(typeof quizNextBtn!=='undefined') quizNextBtn.classList.toggle('hidden', hard);
   questions.classList.toggle('hidden', hard);
   if(hard){ questions.innerHTML=''; return; }
@@ -681,7 +948,6 @@ function checkAnswers(){
     lines.push(`${good?'✅':'❌'} ${q.title.replace(/？$/,'')}：あなた=${a} / 正解=${q.correct}`);
   }
   normalJudged=true;
-  normalJudged=false;
   showNormalAnswer=true;
   renderQuestions();
   result.innerHTML = `<span class="${ok===total && answered===total?'ok':'warn'}">${ok}/${total} 正解</span>\n`+
@@ -709,11 +975,11 @@ function currentBaulMapPhase(){
 }
 
 function renderArena(){
-  const svg=arena; const hard=modeSelect.value==='hard';
+  const svg=arena; const hard=isMapLikeView();
   svg.innerHTML='';
   const NS='http://www.w3.org/2000/svg';
   const add=(tag,attrs,parent=svg)=>{const e=document.createElementNS(NS,tag); for(const [k,v] of Object.entries(attrs)) e.setAttribute(k,v); parent.appendChild(e); return e;};
-  add('defs',{}).innerHTML=`<filter id="glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>`;
+  add('defs',{}).innerHTML=`<filter id="glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter><filter id="blueGlow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>`;
   add('circle',{cx:300,cy:300,r:230,fill:'#151a2e',stroke:'#7f8ab3','stroke-width':2,opacity:.9});
   for(let x=70;x<=530;x+=57.5) add('line',{x1:x,y1:60,x2:x,y2:540,stroke:'#26304c','stroke-width':1});
   for(let y=70;y<=530;y+=57.5) add('line',{x1:60,y1:y,x2:540,y2:y,stroke:'#26304c','stroke-width':1});
@@ -722,7 +988,7 @@ function renderArena(){
   bindHardMapClicks();
 }
 function bindHardMapClicks(){
-  if(modeSelect.value!=='hard') return;
+  if(!isMapLikeView()) return;
   arena.querySelectorAll('[data-hard-map-answer]').forEach(el=>{
     el.style.cursor='pointer';
     el.addEventListener('click', evt=>{
@@ -848,14 +1114,9 @@ function renderBaulSvg(add,hard){
     });
   }
   const phaseNames = tlbPhaseNames();
-  const phaseIndex = modeSelect.value==='hard' ? phase : Math.min(normalStep,5);
-  const phaseText = `${modeSelect.value==='hard'?'Hard':'Normal'}：${phaseIndex+1}/6 ${phaseNames[phaseIndex]||'完了'} / ${roleSelect.value}`;
+  const phaseIndex = isMapLikeView() ? phase : Math.min(normalStep,5);
+  const phaseText = `${isPracticeView()?'Practice':(isMapLikeView()?'Hard':'Normal')}：${phaseIndex+1}/6 ${phaseNames[phaseIndex]||'完了'} / ${roleSelect.value}`;
   add('text',{x:300,y:585,fill:'#e9edff','font-size':16,'font-weight':800,'text-anchor':'middle'}).textContent = phaseText;
-  if(modeSelect.value==='hard'){
-    const n = Math.min(hardStep+1, 6);
-    add('rect',{x:500,y:18,width:74,height:34,rx:12,fill:'rgba(7,10,20,.82)',stroke:'#8aa4ff','stroke-width':2});
-    add('text',{x:537,y:40,fill:'#ffffff','font-size':18,'font-weight':900,'text-anchor':'middle'}).textContent = `${n}/6`;
-  }
 }
 function polarPoint(dir, radius=195){
   const [x,y]=pos[dir];
@@ -1012,6 +1273,7 @@ function drawHardAggregateCircle(add,x,y,answer,label='',opts={}){
   }
 }
 function drawHardPhaseMapChoices(add, phase){
+  if(isPoikos()) return drawHardPhaseMapChoicesPoikos(add, phase);
   if(isYanDN()) return drawHardPhaseMapChoicesYanDN(add, phase);
   return drawHardPhaseMapChoicesYanTLB(add, phase);
 }
@@ -1093,6 +1355,77 @@ function dnBasePositions(phase){
   const windDPSOuter=[windTHOuter[0]+wp[0]*40, windTHOuter[1]+wp[1]*40];
 
   return {active,longCrystal,inner,outer,receiver,wind,empty,windTHInner,windTHOuter,windDPSInner,windDPSOuter};
+}
+
+function poikosBasePositions(phase){
+  const wind = crystalPos(state.crystals.wind);
+  const resolving = phase===1 ? state.first : secondElement();
+  const active = crystalPos(state.crystals[resolving]);
+  const adx=active[0]-center[0], ady=active[1]-center[1];
+  const alen=Math.hypot(adx,ady)||1;
+  const an=[adx/alen, ady/alen];
+  let ap=[-an[1], an[0]];
+  const toWind=[wind[0]-active[0], wind[1]-active[1]];
+  if(ap[0]*toWind[0] + ap[1]*toWind[1] < 0) ap=[-ap[0], -ap[1]];
+  const windSide=[active[0]+ap[0]*42, active[1]+ap[1]*42];
+  const antiWind=[active[0]-ap[0]*42, active[1]-ap[1]*42];
+  const waitingCenterShift = resolving==='fire' ? 68 : 44;
+  const waiting=[antiWind[0]-an[0]*waitingCenterShift, antiWind[1]-an[1]*waitingCenterShift];
+
+  const wdx=wind[0]-center[0], wdy=wind[1]-center[1];
+  const wlen=Math.hypot(wdx,wdy)||1;
+  const wn=[wdx/wlen,wdy/wlen], wp=[-wn[1],wn[0]];
+  const base=[wind[0]+wn[0]*28, wind[1]+wn[1]*28];
+  const left1=[base[0]-wp[0]*66 - wn[0]*14, base[1]-wp[1]*66 - wn[1]*14];
+  const left2=[base[0]-wp[0]*24 - wn[0]*14, base[1]-wp[1]*24 - wn[1]*14];
+  const right1=[base[0]+wp[0]*24 - wn[0]*14, base[1]+wp[1]*24 - wn[1]*14];
+  const right2=[base[0]+wp[0]*66 - wn[0]*14, base[1]+wp[1]*66 - wn[1]*14];
+  return {wind,active,windSide,antiWind,waiting,left1,left2,right1,right2};
+}
+function drawHardPhaseMapChoicesPoikos(add, phase){
+  if(phase===0){
+    return drawHardPhaseMapChoicesYanTLB(add, phase);
+  }
+  if(phase===1 || phase===3){
+    const bp=poikosBasePositions(phase);
+    const label=(ans,fallback)=>hardShowAnswer?poikosAnswerLabel(phase,ans,fallback):'';
+    drawHardAggregateCircle(add,bp.windSide[0],bp.windSide[1],'発動クリ風側',label('発動クリ風側','風側'),{r:20,fontSize:10});
+    drawHardAggregateCircle(add,bp.antiWind[0],bp.antiWind[1],'発動クリ反風側',label('発動クリ反風側','反風'),{r:20,fontSize:10});
+    drawHardAggregateCircle(add,bp.waiting[0],bp.waiting[1],'待機位置',label('待機位置','待機'),{r:22,fontSize:10});
+    drawHardAggregateCircle(add,bp.left1[0],bp.left1[1],'風左1',label('風左1','左1'),{r:19,fontSize:10});
+    drawHardAggregateCircle(add,bp.left2[0],bp.left2[1],'風左2',label('風左2','左2'),{r:19,fontSize:10});
+    drawHardAggregateCircle(add,bp.right1[0],bp.right1[1],'風右1',label('風右1','右1'),{r:19,fontSize:10});
+    drawHardAggregateCircle(add,bp.right2[0],bp.right2[1],'風右2',label('風右2','右2'),{r:19,fontSize:10});
+    return true;
+  }
+  if(phase===4){
+    const wind=crystalPos(state.crystals.wind), empty=crystalPos(state.crystals.empty);
+    const gather=[wind[0]+(center[0]-wind[0])*0.34, wind[1]+(center[1]-wind[1])*0.34];
+    if(hardShowAnswer){
+      drawHardAggregateCircle(add,gather[0],gather[1],'全員集合','全員',{r:22,fontSize:13});
+      drawHardAggregateCircle(add,empty[0],empty[1],'D3誘導','D3誘導',{r:20,fontSize:12,labelPos:'above',labelOffset:28,selectable:false});
+    } else {
+      drawHardAggregateCircle(add,gather[0],gather[1],'全員集合','',{r:22});
+      drawHardAggregateCircle(add,empty[0],empty[1],'D3誘導','D3誘導',{r:20,fontSize:12,labelPos:'above',labelOffset:28,selectable:false});
+    }
+    return true;
+  }
+  if(phase===5){
+    const chaos=crystalPos(state.crystals.wind);
+    const dx=chaos[0]-center[0], dy=chaos[1]-center[1];
+    const l=Math.hypot(dx,dy)||1;
+    const n=[dx/l,dy/l], p=[-n[1],n[0]];
+    const topCenter=[chaos[0]-n[0]*68, chaos[1]-n[1]*68];
+    const bottomCenter=[topCenter[0]-n[0]*36, topCenter[1]-n[1]*36];
+    const outerOffsets=[-84,-28,28,84];
+    const innerOffsets=[-84,-28,28,84];
+    const outerRoles=poikosOrderedRoles(true), innerRoles=poikosOrderedRoles(false);
+    const slots=['外列1','外列2','外列3','外列4','内列1','内列2','内列3','内列4'];
+    slots.slice(0,4).forEach((ans,i)=>{ const x=topCenter[0]+p[0]*outerOffsets[i], y=topCenter[1]+p[1]*outerOffsets[i]; drawHardAggregateCircle(add,x,y,ans,hardShowAnswer?(outerRoles[i]||ans):'',{r:18,fontSize:10}); });
+    slots.slice(4).forEach((ans,i)=>{ const x=bottomCenter[0]+p[0]*innerOffsets[i], y=bottomCenter[1]+p[1]*innerOffsets[i]; drawHardAggregateCircle(add,x,y,ans,hardShowAnswer?(innerRoles[i]||ans):'',{r:18,fontSize:10}); });
+    return true;
+  }
+  return drawHardPhaseMapChoicesYanDN(add, phase);
 }
 function drawHardPhaseMapChoicesYanDN(add, phase){
   if(phase===0){
@@ -1195,7 +1528,7 @@ function drawNormalRoleCircle(add,x,y,role){
 function implosionGeometry(){
   // TLB式：風クリ上のカオス中心からX字分割。
   // DN式3枚目：中央のカオス中心から、風クリ＋未発動属性クリの中間方向を前としてX字分割。
-  const dnCenterImplosion = isYanDN() && currentBaulMapPhase()===2;
+  const dnCenterImplosion = isDnLike() && currentBaulMapPhase()===2;
   const c = dnCenterImplosion ? [center[0], center[1]] : crystalPos(state.crystals.wind);
   const target = dnCenterImplosion ? dnRemainingMidpoint() : center;
   const f0 = [target[0]-c[0], target[1]-c[1]];
@@ -1287,19 +1620,34 @@ function drawTlbBosses(add){
   }
   const wind=state.crystals.wind;
   let chaos, ex;
-  if(isYanDN() && phase===1){
-    // DN 2枚目：カオスは中央、エクスデスは長い属性側のクリスタルへSTが誘導
+  if(isPoikos() && phase===1){
+    chaos = [center[0], center[1]];
+    ex = crystalPos(state.crystals[oppositeElement(state.first)]);
+  } else if(isPoikos() && phase===2){
+    chaos = [center[0], center[1]];
+    ex = [center[0], center[1]];
+  } else if(isPoikos() && phase===3){
+    chaos = [center[0], center[1]];
+    ex = crystalPos(state.crystals[state.first]);
+  } else if(isPoikos() && phase===4){
+    chaos = [center[0], center[1]];
+    ex = crystalPos(wind);
+  } else if(isPoikos() && phase===5){
+    chaos = crystalPos(wind);
+    ex = [chaos[0], chaos[1]];
+  } else if(isYanDN() && phase===1){
     chaos = [center[0], center[1]];
     ex = crystalPos(state.crystals[oppositeElement(state.first)]);
   } else if(isYanDN() && (phase===2 || phase===3)){
-    // DN 3〜4枚目：カオス/エクスデスとも中央に重ねる
     chaos = [center[0], center[1]];
     ex = [center[0], center[1]];
   } else if(isYanDN() && (phase===4 || phase===5)){
-    // DN 5〜6枚目：ボス2体とも風クリスタル上に重ねる
     chaos = crystalPos(wind);
     ex = [chaos[0], chaos[1]];
   } else if(phase===2){
+    chaos = crystalPos(wind);
+    ex = [chaos[0], chaos[1]];
+  } else if(phase===3){
     chaos = crystalPos(wind);
     ex = [chaos[0], chaos[1]];
   } else if(phase===4 || phase===5){
@@ -1311,15 +1659,18 @@ function drawTlbBosses(add){
   }
   add('circle',{cx:chaos[0],cy:chaos[1],r:86,fill:'rgba(255,70,70,.10)',stroke:'#ff5555','stroke-width':5,opacity:.95});
   add('text',{x:chaos[0],y:chaos[1]-94,fill:'#ff9a9a','font-size':14,'font-weight':900,'text-anchor':'middle'}).textContent='カオス';
-  if(isYanDN() && phase===2) drawFacingLineTo(add, chaos, dnRemainingMidpoint(), 56, '#ff8585');
-  else if(isYanDN() && (phase===4 || phase===5)) drawFacingOutward(add, chaos, 56, '#ff8585');
+  if(isDnLike() && phase===2) drawFacingLineTo(add, chaos, dnRemainingMidpoint(), 56, '#ff8585');
+  else if(isDnLike() && (phase===4 || phase===5)) drawFacingOutward(add, chaos, 56, '#ff8585');
   else drawFacingLine(add, chaos, 56, '#ff8585');
   add('circle',{cx:ex[0],cy:ex[1],r:62,fill:'rgba(160,80,255,.12)',stroke:'#b56cff','stroke-width':4,opacity:.95});
   if(phase===2){
     add('text',{x:ex[0],y:ex[1]+84,fill:'#d9bcff','font-size':14,'font-weight':900,'text-anchor':'middle'}).textContent='エクスデス';
-    if(isYanDN()) drawFacingLineTo(add, ex, dnRemainingMidpoint(), 42, '#d3b0ff');
+    if(isDnLike()) drawFacingLineTo(add, ex, dnRemainingMidpoint(), 42, '#d3b0ff');
     else drawFacingLine(add, ex, 42, '#d3b0ff');
-    if(isYanDN()){
+    if(isPracticeView()){
+      add('rect',{x:132,y:70,width:336,height:36,rx:12,fill:'rgba(20,34,62,.90)',stroke:'#6bdcff','stroke-width':2.5,filter:'url(#blueGlow)'});
+      add('text',{x:300,y:93,fill:'#e8fbff','font-size':17,'font-weight':900,'text-anchor':'middle'}).textContent=`ボスの詠唱：${state.implosion}・インプロージョン`;
+    } else if(isDnLike()){
       add('rect',{x:72,y:62,width:456,height:52,rx:10,fill:'rgba(7,10,20,.82)',stroke:'#8aa4ff','stroke-width':1.5});
       add('text',{x:300,y:82,fill:'#ffffff','font-size':15,'font-weight':900,'text-anchor':'middle'}).textContent=`ボスの詠唱：${state.implosion}・インプロージョン`;
       add('text',{x:300,y:101,fill:'#cfe0ff','font-size':12,'font-weight':700,'text-anchor':'middle'}).textContent=`DN 3枚目：中央重ね / 向き=${elementJa(secondElement())}クリ＋風クリの中間`;
@@ -1328,18 +1679,37 @@ function drawTlbBosses(add){
       add('text',{x:300,y:94,fill:'#ffffff','font-size':15,'font-weight':900,'text-anchor':'middle'}).textContent=`ボスの詠唱：${state.implosion}・インプロージョン`;
     }
   } else {
+
     add('text',{x:ex[0],y:ex[1]+78,fill:'#d9bcff','font-size':14,'font-weight':900,'text-anchor':'middle'}).textContent='エクスデス';
-    if(isYanDN() && (phase===4 || phase===5)) drawFacingOutward(add, ex, 42, '#d3b0ff');
+    if(isDnLike() && (phase===4 || phase===5)) drawFacingOutward(add, ex, 42, '#d3b0ff');
     else drawFacingLine(add, ex, 42, '#d3b0ff');
-    if(isYanDN() && phase===1){
+    if(!isPracticeView() && isPoikos() && phase===1){
+      add('rect',{x:70,y:72,width:460,height:34,rx:10,fill:'rgba(7,10,20,.82)',stroke:'#8aa4ff','stroke-width':1.5});
+      add('text',{x:300,y:94,fill:'#ffffff','font-size':13,'font-weight':900,'text-anchor':'middle'}).textContent=`Poikos 2枚目：先デバフは発動クリを90度ずれ処理 / STはエクスデスを${elementCrystalLabel(oppositeElement(state.first))}へ`;
+      add('text',{x:ex[0],y:ex[1]+6,fill:'#e8d7ff','font-size':10,'font-weight':900,'text-anchor':'middle'}).textContent='タン強';
+      add('text',{x:ex[0],y:ex[1]+18,fill:'#e8d7ff','font-size':10,'font-weight':900,'text-anchor':'middle'}).textContent='(近い人に2回)';
+    }
+    if(!isPracticeView() && isPoikos() && phase===3){
+      add('rect',{x:74,y:72,width:452,height:34,rx:10,fill:'rgba(7,10,20,.82)',stroke:'#8aa4ff','stroke-width':1.5});
+      add('text',{x:300,y:94,fill:'#ffffff','font-size':13,'font-weight':900,'text-anchor':'middle'}).textContent=`Poikos 4枚目：後デバフが後クリスタルを90度ずれ処理 / 風クリ4人は2枚目と同じ`;
+    }
+    if(!isPracticeView() && isPoikos() && phase===4){
+      add('rect',{x:126,y:72,width:348,height:34,rx:10,fill:'rgba(7,10,20,.82)',stroke:'#8aa4ff','stroke-width':1.5});
+      add('text',{x:300,y:94,fill:'#ffffff','font-size':14,'font-weight':900,'text-anchor':'middle'}).textContent='Poikos 5枚目：カオスはフィールド中央';
+    }
+    if(!isPracticeView() && isPoikos() && phase===5){
+      add('rect',{x:96,y:72,width:408,height:34,rx:10,fill:'rgba(7,10,20,.82)',stroke:'#8aa4ff','stroke-width':1.5});
+      add('text',{x:300,y:94,fill:'#ffffff','font-size':13,'font-weight':900,'text-anchor':'middle'}).textContent='Poikos 6枚目：外列=風のみ / 内列=残り4人';
+    }
+    if(!isPracticeView() && isYanDN() && phase===1){
       add('rect',{x:116,y:72,width:368,height:34,rx:10,fill:'rgba(7,10,20,.82)',stroke:'#8aa4ff','stroke-width':1.5});
       add('text',{x:300,y:94,fill:'#ffffff','font-size':14,'font-weight':900,'text-anchor':'middle'}).textContent=`DN 2枚目：カオス中央 / STはエクスデスを${elementCrystalLabel(oppositeElement(state.first))}へ`;
     }
-    if(isYanDN() && phase===3){
+    if(!isPracticeView() && isYanDN() && phase===3){
       add('rect',{x:72,y:72,width:456,height:34,rx:10,fill:'rgba(7,10,20,.82)',stroke:'#8aa4ff','stroke-width':1.5});
       add('text',{x:300,y:94,fill:'#ffffff','font-size':13,'font-weight':900,'text-anchor':'middle'}).textContent=`DN 4枚目：ボス2体は中央重ね / 後発属性は後発クリ内外、先発属性は中央付近`;
     }
-    if(isYanDN() && phase===4){
+    if(!isPracticeView() && isYanDN() && phase===4){
       add('rect',{x:96,y:72,width:408,height:34,rx:10,fill:'rgba(7,10,20,.82)',stroke:'#8aa4ff','stroke-width':1.5});
       add('text',{x:300,y:94,fill:'#ffffff','font-size':13,'font-weight':900,'text-anchor':'middle'}).textContent=`DN 5枚目：ボス2体は風クリ上に重なり外周向き / 全員集合`;
     }
@@ -1369,6 +1739,14 @@ function implosionRegionShort(region){
   return {前側:'前',後側:'後',左側:'左',右側:'右'}[region] || region;
 }
 function hardChoiceOptions(step=hardStep){
+  if(isPoikos()){
+    if(step===0) return ['カオス側','エクスデス側'];
+    if(step===1 || step===3) return ['発動クリ風側','発動クリ反風側','待機位置','風左1','風左2','風右1','風右2'];
+    if(step===2) return [];
+    if(step===4) return modeSelect.value==='hard' ? ['全員集合'] : ['D3誘導','真空波ノックバック受け','アムレン/堅実'];
+    if(step===5) return ['外列1','外列2','外列3','外列4','内列1','内列2','内列3','内列4'];
+    return [];
+  }
   if(isYanDN()){
     if(step===0) return ['カオス側','エクスデス側'];
     if(step===1 || step===3) return ['発動クリ内側','発動クリ外側','反対属性受け','風クリ内側誘導','風クリ外側誘導','風クリ内側受け','風クリ外側受け'];
@@ -1386,6 +1764,14 @@ function hardChoiceOptions(step=hardStep){
 }
 function hardExpectedChoice(step){
   const me=roleSelect.value;
+  if(isPoikos()){
+    if(step===0) return lpSide(me);
+    if(step===1) return poikosResolveAnswer(me, state.first);
+    if(step===2) return implosionSafeSeq()[hardImplosionClicks.length] || implosionSafeSeq()[0];
+    if(step===3) return poikosResolveAnswer(me, secondElement());
+    if(step===4) return modeSelect.value==='hard' ? '全員集合' : dnVacuumPrepAnswer(me);
+    if(step===5) return poikosFinalAnswer(me);
+  }
   if(isYanDN()){
     if(step===0) return lpSide(me);
     if(step===1) return dnResolveAnswer(me, state.first);
@@ -1417,14 +1803,17 @@ function hardStepTitle(step){
 function hardExpectedText(step){
   if(step===2){
     const seq=implosionSafeSeq();
-    return isYanDN()
-      ? `DN 3枚目：中央重ね・向きは風クリ＋${elementJa(secondElement())}クリの中間 / 正解：1回目=${seq[0]} → 2回目=${seq[1]}`
-      : `詠唱：${state.implosion}・インプロージョン / 正解：1回目=${seq[0]} → 2回目=${seq[1]}`;
+    return isPoikos()
+      ? `Poikos 3枚目：詠唱確認 / 正解：1回目=${seq[0]} → 2回目=${seq[1]}`
+      : (isYanDN()
+        ? `DN 3枚目：中央重ね・向きは風クリ＋${elementJa(secondElement())}クリの中間 / 正解：1回目=${seq[0]} → 2回目=${seq[1]}`
+        : `詠唱：${state.implosion}・インプロージョン / 正解：1回目=${seq[0]} → 2回目=${seq[1]}`);
   }
   if(step===3){
+    if(isPoikos()) return `Poikos 4枚目：後デバフが後クリスタル、先デバフは待機。選択肢=${hardExpectedChoice(step)}`;
     return isYanDN() ? `2回目も1回目と同じ構造。選択肢=${hardExpectedChoice(step)}` : `4/6は2/6と同じ処理。正解目安：${tlbPositionLabel(roleSelect.value, 1)} / 選択肢=${hardExpectedChoice(step)}`;
   }
-  if(isYanDN()) return `正解：${hardExpectedChoice(step)}`;
+  if(isDnLike()) return `正解：${hardExpectedChoice(step)}`;
   return `正解目安：${tlbPositionLabel(roleSelect.value, step)} / 選択肢=${hardExpectedChoice(step)}`;
 }
 function submitHardSelected(){
@@ -1452,6 +1841,7 @@ function judgeImplosionSelection(){
   hardJudgeCorrect=allOk;
   result.innerHTML = `${allOk?'<span class="ok">OK</span>':'<span class="ng">NG</span>'}：インプロージョン安置 / 正解 1回目=${seq[0]} → 2回目=${seq[1]}${allOk?'':'<br>赤=誤答、緑=正解'}`;
   renderAll();
+  if(isPracticeView()) pausePractice();
   maybeAutoAdvanceHard();
 }
 
@@ -1468,12 +1858,17 @@ function selectHardChoice(choice){
   hardJudgeCorrect=ok;
   result.innerHTML = `${ok?'<span class="ok">OK</span>':'<span class="ng">NG</span>'}：選択=${choice} / 正解=${expected}${ok?'':'<br>赤=誤答、緑=正解'}`;
   renderAll();
+  if(isPracticeView()) pausePractice();
   maybeAutoAdvanceHard();
 }
 function hardStepHelp(){
-  if(isYanDN()){
+  if(isDnLike()){
+    if(isPoikos() && hardStep===1) return 'Poikos 2枚目：先デバフ2人は発動クリを90度ずれで処理。DPSが風クリ側、THが反対側。遅デバフ2人はTH側近くで待機し、風のみ4人は風クリ外周側で2:2に分かれます。';
     if(hardStep===1) return 'DN 2枚目：カオスは中央。STはエクスデスを長い属性側のクリスタルへ誘導。短い属性持ちは発動クリを内外で挟み、反対属性は中央付近の発動クリ寄り、風のみは風クリTH誘導＋DPS受けです。';
+    if(isPoikos() && hardStep===3) return 'Poikos 4枚目：後デバフ2人が後クリスタルを90度ずれで処理し、先デバフ2人はTH側近くで待機。風クリ4人は2枚目と同じです。';
     if(hardStep===3) return 'DN 4枚目：後から発動する属性持ち2人が、後発クリスタルを内周/外周で挟みます。優先順位は MT > ST > H1 > H2 > D1 > D2 > D3 > D4。先に発動していた属性持ち2人は中央付近の後発クリ寄り、炎水デバフなし4人は2枚目と同じ風クリ処理です。';
+    if(isPoikos() && hardStep===4) return 'Poikos 5枚目：カオスはフィールド中央。選択肢は全員集合1個で、D3誘導は表示のみです。';
+    if(isPoikos() && hardStep===5) return 'Poikos 6枚目：カオスのタゲサ上に風のみ4人、その少し中心側に残り4人を、左からヒラ→タンク→近接→遠隔の順で並べます。';
     if(hardStep===4) return 'DN 5枚目：ボス2体は風クリスタル上に重なり、外周向きです。選択肢は全員集合の1個だけにし、D3誘導は表示のみとしています。';
     if(hardStep===5) return 'DN 6枚目：ボス2体は外周向き。エクスデス正面基準で左がTH、右がDPS。内側4人は炎水なし、外側4人は炎水ありで、どちらも外周側から中心側へ優先順に並びます。';
     if(hardStep===2) return `DN 3枚目：カオス/エクスデスは中央重ね。カオスは風クリ＋未発動属性クリの中間方向へ向けます。カオス中心からX字に4分割されたエリアをクリックしてください。${hardImplosionClicks.length===0?'1回目安置':'2回目安置'}を選択中です。`;
@@ -1485,23 +1880,86 @@ function hardStepHelp(){
   if(hardStep===5) return 'ボス位置は5/6のままです。ノックバック後、全員で中央集合を選んでください。';
   return 'マップ上の○を選んで「判定」を押します。';
 }
+
 function renderHardPractice(){
-  const hard=modeSelect.value==='hard';
+  const hard=isMapLikeView();
   if(typeof quizNextBtn!=='undefined') quizNextBtn.classList.toggle('hidden', hard);
   hardPractice.classList.toggle('hidden', !hard);
-  if(!hard){ hardPractice.innerHTML=''; return; }
+  if(!hard){ hardPractice.innerHTML=''; updateSlideTopNav(); return; }
   const steps=tlbPhaseNames();
-  const bar=`<div class="stepbar">${steps.map((s,i)=>`<span class="stepitem ${i===hardStep?'active':i<hardStep?'done':''}">${i+1}. ${s}</span>`).join('')}</div>`;
   let logs=hardClicks.map((c,i)=>c?`${i+1}. ${steps[i]}：${c.ok?'✅':'❌'} ${c.clicked} / ${c.expected}`:null).filter(Boolean).join('<br>') || 'まだ回答していません。';
   if(hardStep===2 && hardImplosionClicks.length){ logs += '<br>' + hardImplosionClicks.map((h,i)=>`3. ${steps[2]}：${h.ok?'✅':'❌'} ${i+1}回目=${implosionRegionShort(h.clicked)}側 / ${h.expected}`).join('<br>'); }
-  hardPractice.innerHTML = bar + `<div class="hintBox"><b>${hardStep<6?hardStepTitle(hardStep):'完了'}</b><br>${hardStep<6?hardStepHelp():'通し回答終了。新しい問題で再挑戦できます。'}</div>`+
-    `<div class="controls"><button class="ghost" id="hardUndo">1手戻す</button><button class="ghost" id="hardShow">このステップの正解</button><button class="danger" id="hardReset">Hardリセット</button></div>`+
-    `<div class="clickLog">${logs}</div>`;
-  hardPractice.querySelectorAll('button[data-hard-choice]').forEach(btn=>btn.onclick=()=>{ hardSelectedChoice=btn.dataset.hardChoice; resetHardJudgeState(); renderHardPractice(); renderArena(); result.textContent=`選択中：${hardSelectedChoice}`; });
-  document.getElementById('hardUndo').onclick=()=>{ if(hardStep===2 && hardImplosionClicks.length>0){hardImplosionClicks.pop(); hardShowAnswer=false; hardSelectedChoice=''; resetHardJudgeState(); renderAll(); result.textContent='インプロージョンの1手を戻しました。'} else if(hardStep>0){hardStep--; hardClicks.pop(); hardShowAnswer=false; hardSelectedChoice=''; resetHardJudgeState(); renderAll(); result.textContent='1手戻しました。'} };
-  document.getElementById('hardReset').onclick=()=>{hardStep=0; hardClicks=[]; hardImplosionClicks=[]; hardShowAnswer=false; hardSelectedChoice=""; resetHardJudgeState(); renderAll(); result.textContent='Hard回答をリセットしました。'};
-  document.getElementById('hardShow').onclick=()=>{hardShowAnswer=true; renderHardPractice(); renderArena(); result.textContent = hardStep<6 ? hardExpectedText(hardStep) : '完了済みです。';};
+  const header = `<div class="hintBox"><b>${hardStep<6?hardStepTitle(hardStep):'完了'}</b><br>${hardStep<6?hardStepHelp():'通し回答終了。新しい問題で再挑戦できます。'}</div>`;
+  if(isPracticeView()){
+    const practiceLogsHtml = practiceLogs.length
+      ? practiceLogs.map((line,i)=>`<div class="practiceLogItem">${i+1}. ${line}</div>`).join('')
+      : '<div class="practiceLogItem muted">まだログはありません。</div>';
+    const finished = practicePhase==='finished' ? '<div class="practiceFinishedBanner">全6枚が終了しました。正誤ログを3秒表示しています。</div>' : '';
+    hardPractice.innerHTML = `<div class="practiceLogBox"><b>正誤ログ</b>${practiceLogsHtml}${finished}</div>`;
+  } else {
+    hardPractice.innerHTML = '';
+  }
+  updateSlideTopNav();
 }
+
+function renderPracticeMapControls(){
+  if(!practiceMapControls) return;
+  if(!isPracticeView()){
+    practiceMapControls.classList.add('hidden');
+    practiceMapControls.innerHTML='';
+    return;
+  }
+  practiceMapControls.classList.remove('hidden');
+  practiceMapControls.innerHTML = `<button class="primary" id="practiceStartInline">スタート</button><button class="ghost" id="practicePause">一時停止</button><button class="ghost" id="practiceNext">別の問題</button><button class="ghost" id="practiceRetry">同じ問題をもう一度</button><button class="ghost" id="practicePrev">一問前に戻る</button><button class="ghost" id="hardShow">正解を表示</button>`;
+  const startBtn=document.getElementById('practiceStartInline');
+  const pauseBtn=document.getElementById('practicePause');
+  const nextBtn=document.getElementById('practiceNext');
+  const retryBtn=document.getElementById('practiceRetry');
+  const prevBtn=document.getElementById('practicePrev');
+  const showBtn=document.getElementById('hardShow');
+  if(startBtn) startBtn.onclick=()=>{ startPracticeCountdown(); result.textContent='実践練習を開始します。'; };
+  if(pauseBtn) pauseBtn.onclick=()=>pausePractice();
+  if(nextBtn) nextBtn.onclick=()=>practiceGoNext();
+  if(retryBtn) retryBtn.onclick=()=>practiceRetrySame();
+  if(prevBtn) prevBtn.onclick=()=>practicePrevStep();
+  if(showBtn) showBtn.onclick=()=>{ hardShowAnswer=true; pausePractice(); renderAll(); result.textContent = hardStep<6 ? hardExpectedText(hardStep) : '完了済みです。'; };
+}
+
+function renderPracticeTopArea(){
+  if(!practiceTopArea) return;
+  if(!isPracticeView()){
+    practiceTopArea.classList.add('hidden');
+    practiceTopArea.innerHTML='';
+    return;
+  }
+  practiceTopArea.classList.remove('hidden');
+  const pct = practicePhase==='active' && practiceDuration>0 ? Math.max(0, Math.min(100, (practiceTimeLeft/practiceDuration)*100)) : (practicePhase==='reveal' ? 0 : 100);
+  practiceTopArea.innerHTML = `<div class="practiceMeta"><span><b>実践練習</b> / ${practiceStateText()}</span></div><div class="practiceBar"><div class="practiceFill" style="width:${pct}%"></div></div>`;
+}
+function renderPracticeCenterOverlay(){
+  if(!practiceCenterOverlay) return;
+  if(!isPracticeView()){
+    practiceCenterOverlay.classList.add('hidden');
+    practiceCenterOverlay.innerHTML='';
+    return;
+  }
+  const showCountdown = practicePhase==='countdown' && practiceCountdown>0;
+  const showStart = (!practiceStarted && practicePhase==='idle') || (practicePaused && practicePhase!=='finished');
+  if(!showCountdown && !showStart){
+    practiceCenterOverlay.classList.add('hidden');
+    practiceCenterOverlay.innerHTML='';
+    return;
+  }
+  practiceCenterOverlay.classList.remove('hidden');
+  let inner='<div class="practiceCenterBox">';
+  if(showCountdown) inner += `<div class="practiceCountdownText">${practiceCountdown}</div>`;
+  if(showStart) inner += `<button class="primary practiceStartBtnCenter" id="practiceStartCenter">${practicePaused?'再開':'スタート'}</button>`;
+  inner += '</div>';
+  practiceCenterOverlay.innerHTML=inner;
+  const btn=document.getElementById('practiceStartCenter');
+  if(btn) btn.onclick=()=>{ startPracticeCountdown(); result.textContent=practicePaused?'実践練習を再開します。':'実践練習を開始します。'; };
+}
+
 function svgPointFromEvent(evt){
   const pt=arena.createSVGPoint(); pt.x=evt.clientX; pt.y=evt.clientY; return pt.matrixTransform(arena.getScreenCTM().inverse());
 }
@@ -1521,7 +1979,7 @@ function clickMatchesExpected(clicked, expected){
 }
 arena.addEventListener('click', evt=>{
   if(tabUltima.classList.contains('active')) return;
-  if(modeSelect.value==='hard') {
+  if(isMapLikeView()) {
     result.textContent = 'Hardはマップ上を直接クリックせず、下の丸い立ち位置ボタンで回答します。';
   }
 });
@@ -1570,8 +2028,232 @@ function checkUltimaAnswers(){
   ultimaResult.innerHTML=`<span class="${ok===3?'ok':'warn'}">${ok}/3 正解</span>\n`+lines.join('\n');
 }
 function showUltimaAnswers(){const a=actualUltima(); showUltimaAnswer=true; renderUltimaQuestions(); ultimaResult.innerHTML=`<span class="ok">回答</span>\n実際の回転：${a.actualDir}\n自分の誘導ブラスター：${a.bait}\n立ち位置：${a.stand}`;}
+function isPracticeView(){ return displayMode==='practice'; }
+function isNormalView(){ return displayMode==='normal'; }
+function isHardView(){ return displayMode==='hard'; }
+function isMapLikeView(){ return displayMode!=='normal'; }
+function clearPracticeTimers(){
+  if(practiceTimer){ clearInterval(practiceTimer); practiceTimer=null; }
+  if(practiceCountdownTimer){ clearInterval(practiceCountdownTimer); practiceCountdownTimer=null; }
+  if(practiceRaf){ cancelAnimationFrame(practiceRaf); practiceRaf=null; }
+}
+function currentPracticeStepDuration(step=hardStep){
+  return practiceStepDurations[Math.min(step, practiceStepDurations.length-1)] || 5000;
+}
+function resetPracticeState(resetTime=true){
+  clearPracticeTimers();
+  practiceRunning=false;
+  practicePaused=false;
+  practiceStarted=false;
+  practiceCountdown=0;
+  practicePhase='idle';
+  practiceLastTs=0;
+  practiceCountdownRemaining=3000;
+  practiceRevealRemaining=practiceAnswerDuration;
+  practiceFinishRemaining=practiceLogDuration;
+  if(resetTime){
+    practiceDuration=currentPracticeStepDuration();
+    practiceTimeLeft=practiceDuration;
+    practiceStepRemaining=practiceDuration;
+  }
+}
+function setDisplayMode(mode){
+  displayMode = ['normal','hard','practice'].includes(mode) ? mode : 'practice';
+  localStorage.setItem('p3baulDisplayMode', displayMode);
+  modeSelect.value = displayMode==='normal' ? 'normal' : 'hard';
+  if(modeBtnNormal) modeBtnNormal.classList.toggle('active', displayMode==='normal');
+  if(modeBtnHard) modeBtnHard.classList.toggle('active', displayMode==='hard');
+  if(modeBtnPractice) modeBtnPractice.classList.toggle('active', displayMode==='practice');
+  if(slideTopNav) slideTopNav.style.display = 'flex';
+  renderAll();
+}
+function updateSlideTopNav(){
+  if(!slideTopNav) return;
+  slideTopNav.style.display='flex';
+  const idx = currentSlideStep() + 1;
+  slideCountTop.textContent = `${idx}/6`;
+}
+function preparePracticeStep(resetSelections=true){
+  practiceDuration=currentPracticeStepDuration();
+  practiceTimeLeft=practiceDuration;
+  practiceStepRemaining=practiceDuration;
+  practiceRevealRemaining=practiceAnswerDuration;
+  if(resetSelections){
+    hardShowAnswer=false;
+    hardSelectedChoice='';
+    resetHardJudgeState();
+    if(hardStep===2) hardImplosionClicks=[];
+  }
+}
+function normalizePracticeClicked(){
+  if(hardStep===2){
+    return hardImplosionClicks.length ? hardImplosionClicks.map((h,i)=>`${i+1}回目=${implosionRegionShort(h.clicked)}側`).join(' / ') : '未回答';
+  }
+  return hardSelectedChoice || '未回答';
+}
+function updatePracticeLiveVisuals(){
+  if(!isPracticeView()) return;
+  if(practiceTopArea && !practiceTopArea.classList.contains('hidden')){
+    const pct = practicePhase==='active' && practiceDuration>0 ? Math.max(0, Math.min(100, (practiceTimeLeft/practiceDuration)*100)) : (practicePhase==='reveal' ? 0 : 100);
+    const fill = practiceTopArea.querySelector('.practiceFill');
+    if(fill) fill.style.width = `${pct}%`;
+    const meta = practiceTopArea.querySelector('.practiceMeta span');
+    if(meta) meta.innerHTML = `<b>実践練習</b> / ${practiceStateText()}`;
+  }
+  if(practiceCenterOverlay && practicePhase==='countdown'){
+    const countdownText = practiceCenterOverlay.querySelector('.practiceCountdownText');
+    if(countdownText) countdownText.textContent = practiceCountdown;
+    else renderPracticeCenterOverlay();
+  }
+}
+
+function evaluatePracticeCurrentStep(){
+  let ok=false;
+  let expected='';
+  let clicked=normalizePracticeClicked();
+  if(hardStep===2){
+    const seq=implosionSafeSeq();
+    expected=`1回目=${seq[0]} → 2回目=${seq[1]}`;
+    ok = hardImplosionClicks.length===2 && hardImplosionClicks.every(x=>x.ok);
+    hardClicks[hardStep] = {clicked, expected, ok};
+  } else {
+    expected = hardExpectedChoice(hardStep);
+    ok = hardSelectedChoice===expected;
+    hardClicks[hardStep] = {clicked, expected, ok};
+  }
+  hardJudged=true;
+  hardJudgeCorrect=ok;
+  hardShowAnswer=true;
+  const title=hardStepTitle(hardStep).replace(/^\d+\/6：/,'');
+  practiceLogs.push(`${ok?'✅':'❌'} ${title} / あなた=${clicked} / 正解=${expected}`);
+  result.innerHTML = `${ok?'<span class="ok">OK</span>':'<span class="ng">NG</span>'}：${title} / あなた=${clicked} / 正解=${expected}`;
+}
+function stepPracticeLoop(ts){
+  if(!practiceRunning) return;
+  if(!practiceLastTs) practiceLastTs=ts;
+  const delta = ts - practiceLastTs;
+  practiceLastTs = ts;
+  let needFullRender=false;
+  if(practicePhase==='countdown'){
+    const prevCountdown = practiceCountdown;
+    practiceCountdownRemaining = Math.max(0, practiceCountdownRemaining - delta);
+    practiceCountdown = Math.max(1, Math.ceil(practiceCountdownRemaining/1000));
+    if(practiceCountdown !== prevCountdown) updatePracticeLiveVisuals();
+    if(practiceCountdownRemaining<=0){
+      practicePhase='active';
+      practiceCountdown=0;
+      practiceStarted=true;
+      preparePracticeStep(false);
+      result.textContent='回答してください。';
+      needFullRender=true;
+    }
+  } else if(practicePhase==='active'){
+    practiceStepRemaining = Math.max(0, practiceStepRemaining - delta);
+    practiceTimeLeft = practiceStepRemaining;
+    if(practiceStepRemaining<=0){
+      evaluatePracticeCurrentStep();
+      practicePhase='reveal';
+      practiceRevealRemaining=practiceAnswerDuration;
+      needFullRender=true;
+    }
+  } else if(practicePhase==='reveal'){
+    practiceRevealRemaining = Math.max(0, practiceRevealRemaining - delta);
+    if(practiceRevealRemaining<=0){
+      if(hardStep<5){
+        hardStep += 1;
+        preparePracticeStep(true);
+        practicePhase='active';
+      } else {
+        practicePhase='finished';
+        practiceFinishRemaining=practiceLogDuration;
+        result.textContent='実践練習が終了しました。';
+      }
+      needFullRender=true;
+    }
+  } else if(practicePhase==='finished'){
+    practiceFinishRemaining = Math.max(0, practiceFinishRemaining - delta);
+    if(practiceFinishRemaining<=0){
+      practiceRunning=false;
+      practicePaused=false;
+      practiceStarted=false;
+      practicePhase='idle';
+      needFullRender=true;
+    }
+  }
+  if(needFullRender) renderAll();
+  else updatePracticeLiveVisuals();
+  if(practiceRunning) practiceRaf=requestAnimationFrame(stepPracticeLoop);
+}
+function startPracticeCountdown(){
+  if(!isPracticeView()) return;
+  if(practiceRunning) return;
+  if(practicePaused){
+    practicePaused=false;
+    practiceRunning=true;
+    practiceLastTs=0;
+    renderAll();
+    practiceRaf=requestAnimationFrame(stepPracticeLoop);
+    return;
+  }
+  if(practicePhase==='idle' || !practiceStarted){
+    preparePracticeStep(true);
+    practiceLogs=[];
+    practiceRunning=true;
+    practicePaused=false;
+    practiceStarted=true;
+    practicePhase='countdown';
+    practiceCountdownRemaining=3000;
+    practiceCountdown=3;
+    practiceLastTs=0;
+    renderAll();
+    practiceRaf=requestAnimationFrame(stepPracticeLoop);
+  }
+}
+function pausePractice(){
+  if(!isPracticeView()) return;
+  if(practiceRunning || practicePhase==='countdown' || practicePhase==='reveal' || practicePhase==='active' || practicePhase==='finished'){
+    clearPracticeTimers();
+    practiceRunning=false;
+    practicePaused=true;
+    renderAll();
+    result.textContent='実践練習を一時停止しました。';
+  }
+}
+function practiceGoNext(){
+  clearPracticeTimers();
+  practiceRunning=false;
+  practicePaused=false;
+  practiceLogs=[];
+  hardStep=0;
+  hardClicks=[];
+  hardImplosionClicks=[];
+  hardShowAnswer=false;
+  hardSelectedChoice='';
+  resetHardJudgeState();
+  genScenario();
+  resetPracticeState(true);
+  renderAll();
+  result.textContent='別の問題に切り替えました。';
+}
+function practiceRetrySame(){
+  clearPracticeTimers();
+  practiceRunning=false; practicePaused=false;
+  preparePracticeStep(true);
+  practicePhase='idle';
+  renderAll();
+  result.textContent='同じ問題をもう一度開始できます。';
+}
+function practicePrevStep(){
+  clearPracticeTimers();
+  practiceRunning=false; practicePaused=false;
+  if(hardStep>0) hardStep--;
+  preparePracticeStep(true);
+  practicePhase='idle';
+  renderAll();
+  result.textContent='一問前に戻りました。';
+}
+
 setup();
 </script>
-  <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "69e65a6b5ec64e5bb4b6a6c1c07c4667"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>
