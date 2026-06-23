@@ -168,6 +168,7 @@ let state={}, answers={}, ultima={}, ultimaAnswers={}, normalStep=0, hardStep=0,
 let displayMode='practice';
 let practiceRunning=false, practicePaused=false, practiceStarted=false, practiceCountdown=0, practiceTimeLeft=12000, practiceDuration=12000, practiceTimer=null, practiceCountdownTimer=null;
 let practicePhase='idle', practiceStepRemaining=0, practiceRevealRemaining=1000, practiceFinishRemaining=3000, practiceCountdownRemaining=3000, practiceRaf=null, practiceLastTs=0;
+let practiceSubStep=0;
 let practiceLogs=[];
 const practiceStepDurations=[7000,17000,7000,3000,5000,5000];
 const practiceAnswerDuration=1000;
@@ -404,7 +405,7 @@ function switchTab(t){
   renderArena();
 }
 function genScenario(){
-  answers={}; normalStep=0; hardStep=0; hardClicks=[]; hardImplosionClicks=[]; hardShowAnswer=false; hardSelectedChoice=""; showNormalAnswer=false; normalJudged=false; practiceLogs=[]; resetHardJudgeState();
+  answers={}; normalStep=0; hardStep=0; practiceSubStep=0; hardClicks=[]; hardImplosionClicks=[]; hardShowAnswer=false; hardSelectedChoice=""; showNormalAnswer=false; normalJudged=false; practiceLogs=[]; resetHardJudgeState();
   // クリスタルは1/2/3/4マーカーのいずれかに出現。炎と水は対角、風の対角は空き。
   const fireDir = rand(crystalDirs);
   const waterDir = opposite(fireDir);
@@ -558,7 +559,7 @@ function tlbPositionLabel(role, step=0){
     if(role==='D4') return `水クリの風クリ側（${d}方向）`;
     if(role==='D3') return `水クリの外側（${d}方向）`;
   }
-  if(step===4) return role==='D3' ? '風クリ対角で距離減衰誘導' : 'エクスデス側へ移動';
+  if(step===4) return role==='D3' ? 'D3誘導（風クリ対角で距離減衰）' : 'エクスデス側へ移動';
   if(step===5) return '中央集合';
   if(g==='tank') return `風クリ側中央寄り（${d}方向・カオスサークル外）`;
   if(g==='healer') return `水クリ側外周（${d}方向・マーカー間寄り）`;
@@ -714,13 +715,19 @@ function poikosFinalAnswer(role){
   for(const s of slots){ if(map[s]===role) return s; }
   return '';
 }
-function lpSide(role){
+function lpSideDefault(role){
   return ['MT','H1','D1','D2'].includes(role) ? 'カオス側' : 'エクスデス側';
 }
+function lpSideYanTLB(role){
+  return ['ST','H2','D1','D2'].includes(role) ? 'カオス側' : 'エクスデス側';
+}
+function lpSide(role){
+  return (isYanDN() || isPoikos()) ? lpSideDefault(role) : lpSideYanTLB(role);
+}
 function phaseNames(){
-  if(isPoikos()) return ['MT組/ST組分かれ','1回目 火水＋風処理','インプロージョン安置','2回目 火水＋風処理','真空波前準備','真空波＋2人受け'];
-  if(isYanDN()) return ['MT組/ST組分かれ','1回目 炎水＋風処理','インプロージョン安置','2回目 炎水＋風処理','真空波前準備','真空波＋2人受け'];
-  return ['MT組/ST組分かれ','1回目処理 / TLB固定位置','インプロージョン安置','2回目処理 / 2枚目と同じ','真空波前準備','真空波/TLB3'];
+  if(isPoikos()) return ['MT組/ST組分かれ','1回目 火水＋風処理','インプロージョン安置','2回目 火水＋風処理','アンブラスマッシュ誘導','真空波＋2人受け'];
+  if(isYanDN()) return ['MT組/ST組分かれ','1回目 炎水＋風処理','インプロージョン安置','2回目 炎水＋風処理','アンブラスマッシュ誘導','真空波＋2人受け'];
+  return ['決戦分かれ','1回目処理 / TLB固定位置','インプロージョン安置','2回目処理 / 2枚目と同じ','アンブラスマッシュ誘導','真空波/TLB3'];
 }
 function tlbPhaseNames(){ return phaseNames(); }
 function getNormalStepSpec(){
@@ -736,11 +743,12 @@ function getNormalStepSpecYanTLB(){
   const impSecond=imp==='ホリゾンタル'?'左右安置':'前後安置';
   const specs=[
     {
-      title:'Step 1：MT組 / ST組分かれ',
-      help:'左にカオス、右にエクスデス。カオス側は MT・H1・D1・D2、エクスデス側は ST・H2・D3・D4。',
+      title:'Step 1：決戦分かれ',
+      help:'左にカオス、右にエクスデス。カオス側は ST・H2・D1・D2、エクスデス側は MT・H1・D3・D4。エクスデスの誘導と直後の強攻撃はMT。',
       qs:[
-        {key:'lp', title:'カオス側の基本担当は？', choices:['MT・H1・D1・D2','ST・H2・D3・D4','MT・H1・D1・D3','ST・H2・D2・D4'], correct:'MT・H1・D1・D2'},
-        {key:'side', title:`${me}が最初に入る側は？`, choices:['カオス側','エクスデス側'], correct:lpSide(me)}
+        {key:'lp', title:'カオス側の基本担当は？', choices:['ST・H2・D1・D2','MT・H1・D3・D4','MT・H1・D1・D2','ST・H2・D3・D4'], correct:'ST・H2・D1・D2'},
+        {key:'side', title:`${me}が最初に入る側は？`, choices:['カオス側','エクスデス側'], correct:lpSide(me)},
+        {key:'exTank', title:'エクスデスの誘導と直後の強攻撃担当は？', choices:['MT','ST','H1','H2'], correct:'MT'}
       ]
     },
     {
@@ -771,7 +779,7 @@ function getNormalStepSpecYanTLB(){
       ]
     },
     {
-      title:'Step 5：真空波前準備',
+      title:'Step 5：アンブラスマッシュ誘導',
       help:'カオスは風クリ対角で距離減衰。D3が誘導し、他はエクスデス側へ集合。真空波7割くらいでタンクLB3。',
       qs:[
         {key:'tlb', title:'真空波詠唱7割くらいで使うものは？', choices:['タンクLB3','近接LB3','ヒラLB3','何も使わない'], correct:'タンクLB3'},
@@ -838,7 +846,7 @@ function getNormalStepSpecYanDN(){
       ]
     },
     {
-      title:'Step 5：真空波前準備',
+      title:'Step 5：アンブラスマッシュ誘導',
       help:'STはエクスデスを風クリスタルへ、D3はアンブラスマッシュを風クリスタル反対側へ誘導する。',
       qs:[
         {key:'stWind', title:'STはエクスデスをどこへ誘導する？', choices:['風クリスタル','中央','水クリスタル','炎クリスタル'], correct:'風クリスタル'},
@@ -903,7 +911,7 @@ function getNormalStepSpecPoikos(){
       ]
     },
     {
-      title:'Step 5：真空波前準備',
+      title:'Step 5：アンブラスマッシュ誘導',
       help:'Poikos式5枚目ではカオスをフィールド中央に置く。',
       qs:[
         {key:'p_st2', title:'D3の主な役割は？', choices:['アンブラスマッシュ誘導','中央集合','ヒール専念'], correct:'アンブラスマッシュ誘導'},
@@ -1017,9 +1025,17 @@ function selectImplosionArea(region){
   if(hardStep!==2) return;
   resetHardJudgeState();
 
-  // クリックしなおし：
-  // 1つだけ選択済みのときに同じ場所をクリックすると取り消し。
-  // 2つ選択済みのときは、選んだ場所に応じて1回目/2回目を入れ替え・修正できる。
+  if(isTlbImplosionPracticeStep()){
+    const idx = currentImplosionPracticeIndex() || 0;
+    hardImplosionClicks = [makeImplosionClick(region, idx)];
+    hardSelectedChoice='';
+    renderHardPractice();
+    renderArena();
+    result.textContent = `インプロ${idx+1}回目：${implosionRegionShort(region)}側を選択中。判定はこの${idx+1}回目だけで行います。`;
+    return;
+  }
+
+  // 位置確認では、従来どおり1枚の中で1回目→2回目の順に確認できる。
   if(hardImplosionClicks.length===0){
     hardImplosionClicks.push(makeImplosionClick(region, 0));
   } else if(hardImplosionClicks.length===1){
@@ -1052,6 +1068,7 @@ function selectImplosionArea(region){
     result.textContent = `1回目：${implosionRegionShort(hardImplosionClicks[0].clicked)}側 / 2回目：${implosionRegionShort(hardImplosionClicks[1].clicked)}側を選択中。クリックしなおし可能です。判定を押してください。`;
   }
 }
+
 function renderBaulSvg(add,hard){
   const colors={fire:'#ff5a3d',water:'#39a7ff',wind:'#63d66f'};
   if(hard && hardStep>=6){
@@ -1081,6 +1098,7 @@ function renderBaulSvg(add,hard){
   }
   drawTlbBosses(add);
   drawTlbRoleGuides(add, hard);
+  drawPracticeEventBanner(add);
   if(phase===2){
     const savedShow = hardShowAnswer;
     if(!hard) hardShowAnswer = true;
@@ -1125,12 +1143,29 @@ function polarPoint(dir, radius=195){
   return [center[0]+dx/len*radius, center[1]+dy/len*radius];
 }
 
+function tlbSecondExdeathButtonPoint(){
+  // TLB 2枚目のエクスデス誘導ボタンは、実際のエクスデス円の中心に置く。
+  return polarPoint(state.crystals.empty,170);
+}
+
+function pointOnTargetCircleTowardCenter(bossCenter, radius=62){
+  // フィールド中心とボス中心を結ぶ直線上で、フィールド中心側のタゲサ交点を返す。
+  const dx=bossCenter[0]-center[0], dy=bossCenter[1]-center[1];
+  const len=Math.hypot(dx,dy)||1;
+  return [bossCenter[0]-dx/len*radius, bossCenter[1]-dy/len*radius];
+}
+
+function tlbExdeathNearGatherButtonPoint(){
+  // TLB 5枚目・6枚目のエクスデス側ボタンは、エクスデス中心とフィールド中心を結ぶ直線上のタゲサ交点に置く。
+  return pointOnTargetCircleTowardCenter(crystalPos(state.crystals.wind), 62);
+}
+
 function computeTlbHardRolePositions(phase){
   if(phase===0){
     // 1枚目は各ボスのターゲットサークル中央寄りに4人を配置
     return {
-      MT:[190,278], H1:[230,278], D1:[190,322], D2:[230,322],
-      ST:[370,278], H2:[410,278], D3:[370,322], D4:[410,322]
+      ST:[190,278], H2:[230,278], D1:[190,322], D2:[230,322],
+      MT:[370,278], H1:[410,278], D3:[370,322], D4:[410,322]
     };
   }
   const wind = crystalPos(state.crystals.wind);
@@ -1227,14 +1262,14 @@ function getHardAnswerVisual(answer, phase=currentBaulMapPhase()){
   return 'neutral';
 }
 function hardMapAnswerForRole(step, role){
-  if(step===0) return ['MT','H1','D1','D2'].includes(role) ? 'カオス側' : 'エクスデス側';
+  if(step===0) return lpSide(role);
   if(step===1 || step===3){
     if(['D1','D2'].includes(role)) return '風クリ外周';
     if(['MT','ST','H1','H2'].includes(role)) return '風クリ内周';
     if(role==='D4') return '水クリの風クリ側';
     if(role==='D3') return '水クリの外側';
   }
-  if(step===4) return role==='D3' ? '風クリ対角' : 'エクスデス側';
+  if(step===4) return role==='D3' ? 'D3誘導' : 'エクスデス側';
   if(step===5) return '中央集合';
   return '';
 }
@@ -1269,7 +1304,11 @@ function drawHardAggregateCircle(add,x,y,answer,label='',opts={}){
   if(selectable) drawSelectedRing(add,x,y,(opts.r || 18)+12,answer,true);
   if(label){
     const dy = opts.labelPos==='above' ? -(opts.labelOffset || 28) : opts.labelPos==='below' ? (opts.labelOffset || 30) : 1;
-    add('text',{x,y:y+dy,fill:'#fff','font-size':opts.fontSize || 12,'font-weight':900,'text-anchor':'middle','dominant-baseline':'middle'}).textContent=label;
+    add('text',{x,y:y+dy,fill:'#fff','font-size':opts.fontSize || 12,'font-weight':900,'text-anchor':'middle','dominant-baseline':'middle','pointer-events':'none'}).textContent=label;
+  }
+  if(selectable){
+    // 文字がボタンの上に重なっても押しづらくならないよう、最後に透明な当たり判定を重ねる。
+    add('circle',{cx:x,cy:y,r:opts.hitR || (opts.r || 18)+16,fill:'rgba(0,0,0,0)',stroke:'none','pointer-events':'all','data-hard-map-answer':answer});
   }
 }
 function drawHardPhaseMapChoices(add, phase){
@@ -1281,8 +1320,8 @@ function drawHardPhaseMapChoicesYanTLB(add, phase){
   const rp = computeTlbHardRolePositions(phase);
   if(phase===0){
     if(hardShowAnswer){
-      drawHardAggregateCircle(add,210,300,'カオス側','MT/H1/D1/D2',{r:20,fontSize:12,labelPos:'above',labelOffset:34});
-      drawHardAggregateCircle(add,390,300,'エクスデス側','ST/H2/D3/D4',{r:20,fontSize:12,labelPos:'above',labelOffset:34});
+      drawHardAggregateCircle(add,210,300,'カオス側','ST/H2/D1/D2',{r:20,fontSize:12,labelPos:'above',labelOffset:34});
+      drawHardAggregateCircle(add,390,300,'エクスデス側','MT/H1/D3/D4',{r:20,fontSize:12,labelPos:'above',labelOffset:34});
     } else {
       drawHardAggregateCircle(add,210,300,'カオス側','',{r:20});
       drawHardAggregateCircle(add,390,300,'エクスデス側','',{r:20});
@@ -1293,6 +1332,10 @@ function drawHardPhaseMapChoicesYanTLB(add, phase){
     const d12=[(rp.D1[0]+rp.D2[0])/2,(rp.D1[1]+rp.D2[1])/2];
     const cluster=['MT','ST','H1','H2'].map(k=>rp[k]);
     const c=[cluster.reduce((s,v)=>s+v[0],0)/4, cluster.reduce((s,v)=>s+v[1],0)/4];
+    if(phase===1){
+      const ex=tlbSecondExdeathButtonPoint();
+      drawHardAggregateCircle(add,ex[0],ex[1],'エクスデスMT誘導',hardShowAnswer?'MT誘導':'',{r:17,fontSize:11,labelPos:'below',labelOffset:28});
+    }
     if(hardShowAnswer){
       drawHardAggregateCircle(add,d12[0],d12[1],'風クリ外周','D1/D2',{r:18,fontSize:12,labelPos:'above',labelOffset:28});
       drawHardAggregateCircle(add,c[0],c[1],'風クリ内周','MT/ST/H1/H2',{r:18,fontSize:11,labelPos:'above',labelOffset:28});
@@ -1308,19 +1351,20 @@ function drawHardPhaseMapChoicesYanTLB(add, phase){
   }
   if(phase===4){
     if(hardShowAnswer){
-      drawHardAggregateCircle(add,rp.H2[0],rp.H2[1],'エクスデス側','全員',{r:20,fontSize:14});
-      drawHardAggregateCircle(add,rp.D3[0],rp.D3[1],'','D3誘導',{r:18,fontSize:12,selectable:false});
+      { const exGather=tlbExdeathNearGatherButtonPoint(); drawHardAggregateCircle(add,exGather[0],exGather[1],'エクスデス側','全員（D3以外）',{r:20,fontSize:12}); }
+      drawHardAggregateCircle(add,rp.D3[0],rp.D3[1],'D3誘導','D3誘導',{r:18,fontSize:12,hitR:36});
     } else {
-      drawHardAggregateCircle(add,rp.H2[0],rp.H2[1],'エクスデス側','',{r:20});
-      drawHardAggregateCircle(add,rp.D3[0],rp.D3[1],'','D3誘導',{r:18,fontSize:12,selectable:false});
+      { const exGather=tlbExdeathNearGatherButtonPoint(); drawHardAggregateCircle(add,exGather[0],exGather[1],'エクスデス側','',{r:20}); }
+      drawHardAggregateCircle(add,rp.D3[0],rp.D3[1],'D3誘導','D3誘導',{r:18,fontSize:12,hitR:36});
     }
     return true;
   }
   if(phase===5){
+    const gather=tlbExdeathNearGatherButtonPoint();
     if(hardShowAnswer){
-      drawHardAggregateCircle(add,300,300,'中央集合','全員',{r:20,fontSize:14});
+      drawHardAggregateCircle(add,gather[0],gather[1],'中央集合','全員',{r:20,fontSize:14});
     } else {
-      drawHardAggregateCircle(add,300,300,'中央集合','',{r:20});
+      drawHardAggregateCircle(add,gather[0],gather[1],'中央集合','',{r:20});
     }
     return true;
   }
@@ -1389,6 +1433,10 @@ function drawHardPhaseMapChoicesPoikos(add, phase){
   if(phase===1 || phase===3){
     const bp=poikosBasePositions(phase);
     const label=(ans,fallback)=>hardShowAnswer?poikosAnswerLabel(phase,ans,fallback):'';
+    if(phase===1){
+      const ex=crystalPos(state.crystals[oppositeElement(state.first)]);
+      drawHardAggregateCircle(add,ex[0],ex[1],'エクスデスST誘導',hardShowAnswer?'ST誘導':'',{r:17,fontSize:11,labelPos:'below',labelOffset:28});
+    }
     drawHardAggregateCircle(add,bp.windSide[0],bp.windSide[1],'発動クリ風側',label('発動クリ風側','風側'),{r:20,fontSize:10});
     drawHardAggregateCircle(add,bp.antiWind[0],bp.antiWind[1],'発動クリ反風側',label('発動クリ反風側','反風'),{r:20,fontSize:10});
     drawHardAggregateCircle(add,bp.waiting[0],bp.waiting[1],'待機位置',label('待機位置','待機'),{r:22,fontSize:10});
@@ -1403,10 +1451,10 @@ function drawHardPhaseMapChoicesPoikos(add, phase){
     const gather=[wind[0]+(center[0]-wind[0])*0.34, wind[1]+(center[1]-wind[1])*0.34];
     if(hardShowAnswer){
       drawHardAggregateCircle(add,gather[0],gather[1],'全員集合','全員',{r:22,fontSize:13});
-      drawHardAggregateCircle(add,empty[0],empty[1],'D3誘導','D3誘導',{r:20,fontSize:12,labelPos:'above',labelOffset:28,selectable:false});
+      drawHardAggregateCircle(add,empty[0],empty[1],'D3誘導','D3誘導',{r:20,fontSize:12,labelPos:'above',labelOffset:28,hitR:38});
     } else {
       drawHardAggregateCircle(add,gather[0],gather[1],'全員集合','',{r:22});
-      drawHardAggregateCircle(add,empty[0],empty[1],'D3誘導','D3誘導',{r:20,fontSize:12,labelPos:'above',labelOffset:28,selectable:false});
+      drawHardAggregateCircle(add,empty[0],empty[1],'D3誘導','D3誘導',{r:20,fontSize:12,labelPos:'above',labelOffset:28,hitR:38});
     }
     return true;
   }
@@ -1441,6 +1489,10 @@ function drawHardPhaseMapChoicesYanDN(add, phase){
   if(phase===1 || phase===3){
     const bp=dnBasePositions(phase);
     const label=(ans,fallback)=>hardShowAnswer?dnAnswerLabel(phase,ans,fallback):'';
+    if(phase===1){
+      const ex=crystalPos(state.crystals[oppositeElement(state.first)]);
+      drawHardAggregateCircle(add,ex[0],ex[1],'エクスデスST誘導',hardShowAnswer?'ST誘導':'',{r:17,fontSize:11,labelPos:'below',labelOffset:28});
+    }
     drawHardAggregateCircle(add,bp.inner[0],bp.inner[1],'発動クリ内側',label('発動クリ内側','内側'),{r:20,fontSize:10});
     drawHardAggregateCircle(add,bp.outer[0],bp.outer[1],'発動クリ外側',label('発動クリ外側','外側'),{r:20,fontSize:10});
     drawHardAggregateCircle(add,bp.receiver[0],bp.receiver[1],'反対属性受け',label('反対属性受け','反対属性'),{r:22,fontSize:10});
@@ -1455,10 +1507,10 @@ function drawHardPhaseMapChoicesYanDN(add, phase){
     const gather=[wind[0]+(center[0]-wind[0])*0.36, wind[1]+(center[1]-wind[1])*0.36];
     if(hardShowAnswer){
       drawHardAggregateCircle(add,gather[0],gather[1],'全員集合','全員',{r:22,fontSize:13});
-      drawHardAggregateCircle(add,empty[0],empty[1],'D3誘導','D3誘導',{r:20,fontSize:12,labelPos:'above',labelOffset:28,selectable:false});
+      drawHardAggregateCircle(add,empty[0],empty[1],'D3誘導','D3誘導',{r:20,fontSize:12,labelPos:'above',labelOffset:28,hitR:38});
     } else {
       drawHardAggregateCircle(add,gather[0],gather[1],'全員集合','',{r:22});
-      drawHardAggregateCircle(add,empty[0],empty[1],'D3誘導','D3誘導',{r:20,fontSize:12,labelPos:'above',labelOffset:28,selectable:false});
+      drawHardAggregateCircle(add,empty[0],empty[1],'D3誘導','D3誘導',{r:20,fontSize:12,labelPos:'above',labelOffset:28,hitR:38});
     }
     return true;
   }
@@ -1556,13 +1608,17 @@ function drawImplosionAreaSelector(add, hard){
   const g=implosionGeometry();
   const seq=implosionSafeSeq();
   const regionNames=['前側','右側','後側','左側'];
+  const practiceIdx=currentImplosionPracticeIndex();
+  const practiceClick=currentPracticeImplosionClick();
+  const expectedGroups = practiceIdx===null ? seq : [seq[practiceIdx]];
+  const selectedClicks = practiceIdx===null ? hardImplosionClicks : (practiceClick ? [practiceClick] : []);
   regionNames.forEach(name=>{
     const group=implosionRegionGroup(name);
-    const selectedOrder = hardImplosionClicks.findIndex(h=>h.clicked===name);
+    const selectedOrder = selectedClicks.findIndex(h=>h.clicked===name);
     const selected = selectedOrder>=0;
     let fill='rgba(255,255,255,.025)', stroke='none', sw=0;
     if(hardJudged){
-      const answerRegion = group===seq[0] || group===seq[1];
+      const answerRegion = expectedGroups.includes(group);
       if(hardJudgeCorrect){
         if(answerRegion){ fill='rgba(74,222,128,.20)'; stroke='#4ade80'; sw=2; }
       } else {
@@ -1583,22 +1639,31 @@ function drawImplosionAreaSelector(add, hard){
     if(hardShowAnswer || (!hard && !hardJudged)){
       const group=implosionRegionGroup(name);
       let mark='';
-      if(group===seq[0]) mark='①';
-      else if(group===seq[1]) mark='②';
+      if(practiceIdx!==null){
+        if(group===seq[practiceIdx]) mark=String(practiceIdx+1);
+      } else {
+        if(group===seq[0]) mark='①';
+        else if(group===seq[1]) mark='②';
+      }
       if(mark){
-        add('circle',{cx:x,cy:y,r:18,fill:'rgba(7,10,20,.88)',stroke:'#ffffff','stroke-width':2});
-        add('text',{x,y:y+1,fill:'#ffffff','font-size':16,'font-weight':900,'text-anchor':'middle','dominant-baseline':'middle'}).textContent=mark;
+        add('circle',{cx:x,cy:y,r:18,fill:'rgba(7,10,20,.88)',stroke:'#ffffff','stroke-width':2,'pointer-events':'none'});
+        add('text',{x,y:y+1,fill:'#ffffff','font-size':16,'font-weight':900,'text-anchor':'middle','dominant-baseline':'middle','pointer-events':'none'}).textContent=mark;
       }
     } else {
       const nums=[];
-      hardImplosionClicks.forEach((h,i)=>{ if(h.clicked===name) nums.push(String(i+1)); });
+      if(practiceIdx!==null){
+        if(practiceClick && practiceClick.clicked===name) nums.push(String(practiceIdx+1));
+      } else {
+        hardImplosionClicks.forEach((h,i)=>{ if(h.clicked===name) nums.push(String(i+1)); });
+      }
       if(nums.length){
-        add('circle',{cx:x,cy:y,r:18,fill:'rgba(7,10,20,.88)',stroke:'#ffffff','stroke-width':2});
-        add('text',{x,y:y+1,fill:'#ffffff','font-size':16,'font-weight':900,'text-anchor':'middle','dominant-baseline':'middle'}).textContent=nums.join('/');
+        add('circle',{cx:x,cy:y,r:18,fill:'rgba(7,10,20,.88)',stroke:'#ffffff','stroke-width':2,'pointer-events':'none'});
+        add('text',{x,y:y+1,fill:'#ffffff','font-size':16,'font-weight':900,'text-anchor':'middle','dominant-baseline':'middle','pointer-events':'none'}).textContent=nums.join('/');
       }
     }
   });
 }
+
 function drawHardSafeHotspot(add,x,y,label,answer){
   const selected = hardSelectedChoice===answer;
   const correct = hardShowAnswer && answer===hardExpectedChoice(2);
@@ -1616,6 +1681,9 @@ function drawTlbBosses(add){
     add('text',{x:chaos[0],y:chaos[1]-94,fill:'#ff9a9a','font-size':18,'font-weight':900,'text-anchor':'middle'}).textContent='カオス';
     add('circle',{cx:ex[0],cy:ex[1],r:62,fill:'rgba(160,80,255,.12)',stroke:'#b56cff','stroke-width':4,opacity:.95});
     add('text',{x:ex[0],y:ex[1]-70,fill:'#d9bcff','font-size':18,'font-weight':900,'text-anchor':'middle'}).textContent='エクスデス';
+    if(!isDnLike()){
+      add('text',{x:ex[0],y:ex[1]+78,fill:'#e8d7ff','font-size':12,'font-weight':900,'text-anchor':'middle'}).textContent='MT誘導・強攻撃';
+    }
     return;
   }
   const wind=state.crystals.wind;
@@ -1668,14 +1736,14 @@ function drawTlbBosses(add){
     if(isDnLike()) drawFacingLineTo(add, ex, dnRemainingMidpoint(), 42, '#d3b0ff');
     else drawFacingLine(add, ex, 42, '#d3b0ff');
     if(isPracticeView()){
-      add('rect',{x:132,y:70,width:336,height:36,rx:12,fill:'rgba(20,34,62,.90)',stroke:'#6bdcff','stroke-width':2.5,filter:'url(#blueGlow)'});
+      add('rect',{x:64,y:70,width:472,height:36,rx:12,fill:'rgba(20,34,62,.90)',stroke:'#6bdcff','stroke-width':2.5,filter:'url(#blueGlow)'});
       add('text',{x:300,y:93,fill:'#e8fbff','font-size':17,'font-weight':900,'text-anchor':'middle'}).textContent=`ボスの詠唱：${state.implosion}・インプロージョン`;
     } else if(isDnLike()){
-      add('rect',{x:72,y:62,width:456,height:52,rx:10,fill:'rgba(7,10,20,.82)',stroke:'#8aa4ff','stroke-width':1.5});
+      add('rect',{x:48,y:62,width:504,height:52,rx:10,fill:'rgba(7,10,20,.82)',stroke:'#8aa4ff','stroke-width':1.5});
       add('text',{x:300,y:82,fill:'#ffffff','font-size':15,'font-weight':900,'text-anchor':'middle'}).textContent=`ボスの詠唱：${state.implosion}・インプロージョン`;
       add('text',{x:300,y:101,fill:'#cfe0ff','font-size':12,'font-weight':700,'text-anchor':'middle'}).textContent=`DN 3枚目：中央重ね / 向き=${elementJa(secondElement())}クリ＋風クリの中間`;
     } else {
-      add('rect',{x:126,y:72,width:348,height:34,rx:10,fill:'rgba(7,10,20,.82)',stroke:'#8aa4ff','stroke-width':1.5});
+      add('rect',{x:64,y:72,width:472,height:34,rx:10,fill:'rgba(7,10,20,.82)',stroke:'#8aa4ff','stroke-width':1.5});
       add('text',{x:300,y:94,fill:'#ffffff','font-size':15,'font-weight':900,'text-anchor':'middle'}).textContent=`ボスの詠唱：${state.implosion}・インプロージョン`;
     }
   } else {
@@ -1683,6 +1751,12 @@ function drawTlbBosses(add){
     add('text',{x:ex[0],y:ex[1]+78,fill:'#d9bcff','font-size':14,'font-weight':900,'text-anchor':'middle'}).textContent='エクスデス';
     if(isDnLike() && (phase===4 || phase===5)) drawFacingOutward(add, ex, 42, '#d3b0ff');
     else drawFacingLine(add, ex, 42, '#d3b0ff');
+    if(!isPracticeView() && !isDnLike() && phase===1){
+      add('rect',{x:92,y:72,width:416,height:34,rx:10,fill:'rgba(7,10,20,.82)',stroke:'#8aa4ff','stroke-width':1.5});
+      add('text',{x:300,y:94,fill:'#ffffff','font-size':13,'font-weight':900,'text-anchor':'middle'}).textContent='TLB 2枚目：エクスデス誘導＋直後の強攻撃はMT';
+      add('text',{x:ex[0],y:ex[1]+6,fill:'#e8d7ff','font-size':10,'font-weight':900,'text-anchor':'middle'}).textContent='MT誘導';
+      add('text',{x:ex[0],y:ex[1]+18,fill:'#e8d7ff','font-size':10,'font-weight':900,'text-anchor':'middle'}).textContent='強攻撃';
+    }
     if(!isPracticeView() && isPoikos() && phase===1){
       add('rect',{x:70,y:72,width:460,height:34,rx:10,fill:'rgba(7,10,20,.82)',stroke:'#8aa4ff','stroke-width':1.5});
       add('text',{x:300,y:94,fill:'#ffffff','font-size':13,'font-weight':900,'text-anchor':'middle'}).textContent=`Poikos 2枚目：先デバフは発動クリを90度ずれ処理 / STはエクスデスを${elementCrystalLabel(oppositeElement(state.first))}へ`;
@@ -1694,8 +1768,8 @@ function drawTlbBosses(add){
       add('text',{x:300,y:94,fill:'#ffffff','font-size':13,'font-weight':900,'text-anchor':'middle'}).textContent=`Poikos 4枚目：後デバフが後クリスタルを90度ずれ処理 / 風クリ4人は2枚目と同じ`;
     }
     if(!isPracticeView() && isPoikos() && phase===4){
-      add('rect',{x:126,y:72,width:348,height:34,rx:10,fill:'rgba(7,10,20,.82)',stroke:'#8aa4ff','stroke-width':1.5});
-      add('text',{x:300,y:94,fill:'#ffffff','font-size':14,'font-weight':900,'text-anchor':'middle'}).textContent='Poikos 5枚目：カオスはフィールド中央';
+      add('rect',{x:64,y:72,width:472,height:34,rx:10,fill:'rgba(7,10,20,.82)',stroke:'#8aa4ff','stroke-width':1.5});
+      add('text',{x:300,y:94,fill:'#ffffff','font-size':14,'font-weight':900,'text-anchor':'middle'}).textContent='Poikos 5枚目：アンブラスマッシュ誘導 / カオスはフィールド中央';
     }
     if(!isPracticeView() && isPoikos() && phase===5){
       add('rect',{x:96,y:72,width:408,height:34,rx:10,fill:'rgba(7,10,20,.82)',stroke:'#8aa4ff','stroke-width':1.5});
@@ -1711,7 +1785,7 @@ function drawTlbBosses(add){
     }
     if(!isPracticeView() && isYanDN() && phase===4){
       add('rect',{x:96,y:72,width:408,height:34,rx:10,fill:'rgba(7,10,20,.82)',stroke:'#8aa4ff','stroke-width':1.5});
-      add('text',{x:300,y:94,fill:'#ffffff','font-size':13,'font-weight':900,'text-anchor':'middle'}).textContent=`DN 5枚目：ボス2体は風クリ上に重なり外周向き / 全員集合`;
+      add('text',{x:300,y:94,fill:'#ffffff','font-size':13,'font-weight':900,'text-anchor':'middle'}).textContent=`DN 5枚目：アンブラスマッシュ誘導 / ボス2体は風クリ上に重なり外周向き`;
     }
   }
 }
@@ -1738,27 +1812,33 @@ function implosionRegionGroup(region){
 function implosionRegionShort(region){
   return {前側:'前',後側:'後',左側:'左',右側:'右'}[region] || region;
 }
+function currentPracticeImplosionClick(){
+  return isTlbImplosionPracticeStep() ? (hardImplosionClicks[0] || null) : null;
+}
 function hardChoiceOptions(step=hardStep){
   if(isPoikos()){
     if(step===0) return ['カオス側','エクスデス側'];
-    if(step===1 || step===3) return ['発動クリ風側','発動クリ反風側','待機位置','風左1','風左2','風右1','風右2'];
+    if(step===1) return (isMapLikeView() ? ['エクスデスST誘導'] : []).concat(['発動クリ風側','発動クリ反風側','待機位置','風左1','風左2','風右1','風右2']);
+    if(step===3) return ['発動クリ風側','発動クリ反風側','待機位置','風左1','風左2','風右1','風右2'];
     if(step===2) return [];
-    if(step===4) return modeSelect.value==='hard' ? ['全員集合'] : ['D3誘導','真空波ノックバック受け','アムレン/堅実'];
+    if(step===4) return isMapLikeView() ? ['全員集合','D3誘導'] : ['D3誘導','真空波ノックバック受け','アムレン/堅実'];
     if(step===5) return ['外列1','外列2','外列3','外列4','内列1','内列2','内列3','内列4'];
     return [];
   }
   if(isYanDN()){
     if(step===0) return ['カオス側','エクスデス側'];
-    if(step===1 || step===3) return ['発動クリ内側','発動クリ外側','反対属性受け','風クリ内側誘導','風クリ外側誘導','風クリ内側受け','風クリ外側受け'];
+    if(step===1) return (isMapLikeView() ? ['エクスデスST誘導'] : []).concat(['発動クリ内側','発動クリ外側','反対属性受け','風クリ内側誘導','風クリ外側誘導','風クリ内側受け','風クリ外側受け']);
+    if(step===3) return ['発動クリ内側','発動クリ外側','反対属性受け','風クリ内側誘導','風クリ外側誘導','風クリ内側受け','風クリ外側受け'];
     if(step===2) return [];
-    if(step===4) return modeSelect.value==='hard' ? ['全員集合'] : ['D3誘導','真空波ノックバック受け','アムレン/堅実'];
+    if(step===4) return isMapLikeView() ? ['全員集合','D3誘導'] : ['D3誘導','真空波ノックバック受け','アムレン/堅実'];
     if(step===5) return ['内側TH外周側','内側TH内側','内側DPS外周側','内側DPS内側','外側TH外周側','外側TH内側','外側DPS外周側','外側DPS内側'];
     return [];
   }
   if(step===0) return ['カオス側','エクスデス側'];
-  if(step===1 || step===3) return ['風クリ外周','風クリ内周','水クリの風クリ側','水クリの外側'];
+  if(step===1) return ['エクスデスMT誘導','風クリ外周','風クリ内周','水クリの風クリ側','水クリの外側'];
+  if(step===3) return ['風クリ外周','風クリ内周','水クリの風クリ側','水クリの外側'];
   if(step===2) return [];
-  if(step===4) return ['エクスデス側'];
+  if(step===4) return ['エクスデス側','D3誘導'];
   if(step===5) return ['中央集合'];
   return ['風クリ側中央寄り','水クリ側外周','風クリ側外周','風クリ対角'];
 }
@@ -1766,29 +1846,39 @@ function hardExpectedChoice(step){
   const me=roleSelect.value;
   if(isPoikos()){
     if(step===0) return lpSide(me);
-    if(step===1) return poikosResolveAnswer(me, state.first);
-    if(step===2) return implosionSafeSeq()[hardImplosionClicks.length] || implosionSafeSeq()[0];
+    if(step===1){
+      if(isThunderPracticeStep(step) && me==='ST') return 'エクスデスST誘導';
+      return poikosResolveAnswer(me, state.first);
+    }
+    if(step===2){ const idx=currentImplosionPracticeIndex(); return implosionSafeSeq()[idx===null ? hardImplosionClicks.length : idx] || implosionSafeSeq()[0]; }
     if(step===3) return poikosResolveAnswer(me, secondElement());
-    if(step===4) return modeSelect.value==='hard' ? '全員集合' : dnVacuumPrepAnswer(me);
+    if(step===4) return isMapLikeView() ? (me==='D3' ? 'D3誘導' : '全員集合') : dnVacuumPrepAnswer(me);
     if(step===5) return poikosFinalAnswer(me);
   }
   if(isYanDN()){
     if(step===0) return lpSide(me);
-    if(step===1) return dnResolveAnswer(me, state.first);
-    if(step===2) return implosionSafeSeq()[hardImplosionClicks.length] || implosionSafeSeq()[0];
+    if(step===1){
+      if(isThunderPracticeStep(step) && me==='ST') return 'エクスデスST誘導';
+      return dnResolveAnswer(me, state.first);
+    }
+    if(step===2){ const idx=currentImplosionPracticeIndex(); return implosionSafeSeq()[idx===null ? hardImplosionClicks.length : idx] || implosionSafeSeq()[0]; }
     if(step===3) return dnResolveAnswer(me, secondElement());
-    if(step===4) return modeSelect.value==='hard' ? '全員集合' : dnVacuumPrepAnswer(me);
+    if(step===4) return isMapLikeView() ? (me==='D3' ? 'D3誘導' : '全員集合') : dnVacuumPrepAnswer(me);
     if(step===5) return dnFinalAnswer(me);
   }
   if(step===0) return lpSide(me);
   if(step===1 || step===3){
+    if(step===1 && isThunderPracticeStep(step) && me==='MT') return 'エクスデスMT誘導';
     if(['D1','D2'].includes(me)) return '風クリ外周';
     if(['MT','ST','H1','H2'].includes(me)) return '風クリ内周';
     if(me==='D4') return '水クリの風クリ側';
     if(me==='D3') return '水クリの外側';
   }
-  if(step===2) return implosionSafeSeq()[hardImplosionClicks.length] || implosionSafeSeq()[0];
-  if(step===4) return 'エクスデス側';
+  if(step===2){
+    const idx=currentImplosionPracticeIndex();
+    return implosionSafeSeq()[idx===null ? hardImplosionClicks.length : idx] || implosionSafeSeq()[0];
+  }
+  if(step===4) return me==='D3' ? 'D3誘導' : 'エクスデス側';
   if(step===5) return '中央集合';
   const g=tlbRoleGroup(me);
   if(g==='tank') return '風クリ側中央寄り';
@@ -1803,12 +1893,17 @@ function hardStepTitle(step){
 function hardExpectedText(step){
   if(step===2){
     const seq=implosionSafeSeq();
+    const idx=currentImplosionPracticeIndex();
+    if(idx!==null){
+      return `詠唱：${state.implosion}・インプロージョン / 正解：${idx+1}回目=${seq[idx]}`;
+    }
     return isPoikos()
       ? `Poikos 3枚目：詠唱確認 / 正解：1回目=${seq[0]} → 2回目=${seq[1]}`
       : (isYanDN()
         ? `DN 3枚目：中央重ね・向きは風クリ＋${elementJa(secondElement())}クリの中間 / 正解：1回目=${seq[0]} → 2回目=${seq[1]}`
         : `詠唱：${state.implosion}・インプロージョン / 正解：1回目=${seq[0]} → 2回目=${seq[1]}`);
   }
+  if(step===0 && !isDnLike()) return `決戦分かれ：カオス側=ST/H2/D1/D2、エクスデス側=MT/H1/D3/D4。エクスデス誘導と強攻撃はMT。選択肢=${hardExpectedChoice(step)}`;
   if(step===3){
     if(isPoikos()) return `Poikos 4枚目：後デバフが後クリスタル、先デバフは待機。選択肢=${hardExpectedChoice(step)}`;
     return isYanDN() ? `2回目も1回目と同じ構造。選択肢=${hardExpectedChoice(step)}` : `4/6は2/6と同じ処理。正解目安：${tlbPositionLabel(roleSelect.value, 1)} / 選択肢=${hardExpectedChoice(step)}`;
@@ -1827,6 +1922,26 @@ function submitHardSelected(){
 function judgeImplosionSelection(){
   if(hardStep!==2) return;
   const seq=implosionSafeSeq();
+  if(isTlbImplosionPracticeStep()){
+    const idx=currentImplosionPracticeIndex() || 0;
+    const clickedObj=currentPracticeImplosionClick();
+    if(!clickedObj){
+      result.textContent=`インプロ${idx+1}回目の安置エリアを選んでから判定してください。`;
+      return;
+    }
+    const ok=clickedObj.ok;
+    const clickedLabel=`${idx+1}回目=${implosionRegionShort(clickedObj.clicked)}側`;
+    const expectedLabel=`${idx+1}回目=${seq[idx]}`;
+    hardClicks[hardStep] = {clicked:clickedLabel, expected:expectedLabel, ok};
+    hardJudged=true;
+    hardJudgeCorrect=ok;
+    result.innerHTML = `${ok?'<span class="ok">OK</span>':'<span class="ng">NG</span>'}：インプロ${idx+1}回目安置 / 正解=${seq[idx]}${ok?'':'<br>赤=誤答、緑=正解'}`;
+    renderAll();
+    if(isPracticeView()) pausePractice();
+    maybeAutoAdvanceHard();
+    return;
+  }
+
   if(hardImplosionClicks.length<2){
     result.textContent='1回目と2回目の安置エリアを両方選んでから判定してください。';
     return;
@@ -1844,6 +1959,7 @@ function judgeImplosionSelection(){
   if(isPracticeView()) pausePractice();
   maybeAutoAdvanceHard();
 }
+
 
 function selectHardChoice(choice){
   if(hardStep>=6) return;
@@ -1867,14 +1983,15 @@ function hardStepHelp(){
     if(hardStep===1) return 'DN 2枚目：カオスは中央。STはエクスデスを長い属性側のクリスタルへ誘導。短い属性持ちは発動クリを内外で挟み、反対属性は中央付近の発動クリ寄り、風のみは風クリTH誘導＋DPS受けです。';
     if(isPoikos() && hardStep===3) return 'Poikos 4枚目：後デバフ2人が後クリスタルを90度ずれで処理し、先デバフ2人はTH側近くで待機。風クリ4人は2枚目と同じです。';
     if(hardStep===3) return 'DN 4枚目：後から発動する属性持ち2人が、後発クリスタルを内周/外周で挟みます。優先順位は MT > ST > H1 > H2 > D1 > D2 > D3 > D4。先に発動していた属性持ち2人は中央付近の後発クリ寄り、炎水デバフなし4人は2枚目と同じ風クリ処理です。';
-    if(isPoikos() && hardStep===4) return 'Poikos 5枚目：カオスはフィールド中央。選択肢は全員集合1個で、D3誘導は表示のみです。';
+    if(isPoikos() && hardStep===4) return 'Poikos 5枚目：カオスはフィールド中央。D3はアンブラスマッシュ誘導、他は全員集合を選びます。';
     if(isPoikos() && hardStep===5) return 'Poikos 6枚目：カオスのタゲサ上に風のみ4人、その少し中心側に残り4人を、左からヒラ→タンク→近接→遠隔の順で並べます。';
-    if(hardStep===4) return 'DN 5枚目：ボス2体は風クリスタル上に重なり、外周向きです。選択肢は全員集合の1個だけにし、D3誘導は表示のみとしています。';
+    if(hardStep===4) return 'DN 5枚目：ボス2体は風クリスタル上に重なり、外周向きです。D3はアンブラスマッシュ誘導、他は全員集合を選びます。';
     if(hardStep===5) return 'DN 6枚目：ボス2体は外周向き。エクスデス正面基準で左がTH、右がDPS。内側4人は炎水なし、外側4人は炎水ありで、どちらも外周側から中心側へ優先順に並びます。';
-    if(hardStep===2) return `DN 3枚目：カオス/エクスデスは中央重ね。カオスは風クリ＋未発動属性クリの中間方向へ向けます。カオス中心からX字に4分割されたエリアをクリックしてください。${hardImplosionClicks.length===0?'1回目安置':'2回目安置'}を選択中です。`;
+    if(hardStep===2) return `DN 3枚目：カオス/エクスデスは中央重ね。カオスは風クリ＋未発動属性クリの中間方向へ向けます。カオス中心からX字に4分割されたエリアをクリックしてください。${(currentImplosionPracticeIndex()!==null ? currentImplosionPracticeIndex() : (hardImplosionClicks.length===0?0:1))+1}回目安置を選択中です。`;
     return 'マップ上の○を選んで「判定」を押します。';
   }
-  if(hardStep===2) return `カオス中心からX字に4分割されたエリアをクリックしてください。${hardImplosionClicks.length===0?'1回目安置':'2回目安置'}を選択中です。`;
+  if(hardStep===0) return 'ヤーンTLB式の決戦分かれは、カオス側 ST/H2/D1/D2、エクスデス側 MT/H1/D3/D4 です。エクスデス誘導と直後の強攻撃はMTです。';
+  if(hardStep===2){ const idx=currentImplosionPracticeIndex(); return `カオス中心からX字に4分割されたエリアをクリックしてください。${idx!==null ? idx+1 : (hardImplosionClicks.length===0?1:2)}回目安置を選択中です。`; }
   if(hardStep===3) return '4/6は2/6と全く同じです。炎/水のどちらが来ても処理と散開位置は同じなので、2/6と同じ位置を選んでください。';
   if(hardStep===4) return 'D3は風クリ対角で距離減衰を誘導し、他の全員はエクスデス側へ集合します。真空波7割くらいでTLBです。';
   if(hardStep===5) return 'ボス位置は5/6のままです。ノックバック後、全員で中央集合を選んでください。';
@@ -1934,7 +2051,7 @@ function renderPracticeTopArea(){
   }
   practiceTopArea.classList.remove('hidden');
   const pct = practicePhase==='active' && practiceDuration>0 ? Math.max(0, Math.min(100, (practiceTimeLeft/practiceDuration)*100)) : (practicePhase==='reveal' ? 0 : 100);
-  practiceTopArea.innerHTML = `<div class="practiceMeta"><span><b>実践練習</b> / ${practiceStateText()}</span></div><div class="practiceBar"><div class="practiceFill" style="width:${pct}%"></div></div>`;
+  practiceTopArea.innerHTML = `<div class="practiceMeta"><span><b>実践練習</b> / ${practiceStateText()} / ${currentPracticeEventLabel()}</span></div><div class="practiceBar"><div class="practiceFill" style="width:${pct}%"></div></div>`;
 }
 function renderPracticeCenterOverlay(){
   if(!practiceCenterOverlay) return;
@@ -2037,7 +2154,95 @@ function clearPracticeTimers(){
   if(practiceCountdownTimer){ clearInterval(practiceCountdownTimer); practiceCountdownTimer=null; }
   if(practiceRaf){ cancelAnimationFrame(practiceRaf); practiceRaf=null; }
 }
+
+function isTlbPracticeTimeline(){
+  return isPracticeView();
+}
+function tlbPracticeBaseLabel(step){
+  const labels={
+    0:'決戦',
+    3:'遅デバフ発動',
+    4:'アンブラスマッシュ誘導',
+    5:'真空波'
+  };
+  return labels[step] || phaseNames()[step] || '実践練習';
+}
+function tlbPracticeSubEvents(step=hardStep){
+  if(!isTlbPracticeTimeline()) return null;
+  if(step===1){
+    const earlyLabel = isDnLike() ? '早デバフ発動 / 1回目 炎水＋風処理' : '早デバフ発動';
+    return [
+      {label:'サンダガ誘導', duration:10000, reveal:1000},
+      {label:earlyLabel, duration:7000, reveal:1000},
+      {label:'サンダガ（強攻撃）', duration:3000, reveal:1000}
+    ];
+  }
+  if(step===2){
+    return [
+      {label:'インプロ1回目安置', duration:7000, reveal:800},
+      {label:'インプロ2回目安置', duration:2000, reveal:800}
+    ];
+  }
+  return [{label:tlbPracticeBaseLabel(step), duration:practiceStepDurations[Math.min(step, practiceStepDurations.length-1)] || 5000, reveal:practiceAnswerDuration}];
+}
+function currentPracticeSubEvent(){
+  const evs=tlbPracticeSubEvents(hardStep);
+  if(evs) return evs[Math.min(practiceSubStep, evs.length-1)];
+  return {label:phaseNames()[hardStep]||'実践練習', duration:practiceStepDurations[Math.min(hardStep, practiceStepDurations.length-1)] || 5000, reveal:practiceAnswerDuration};
+}
+function currentPracticeEventLabel(){
+  return currentPracticeSubEvent().label;
+}
+function currentPracticeRevealDuration(){
+  return currentPracticeSubEvent().reveal || practiceAnswerDuration;
+}
+function hasNextPracticeSubStep(){
+  const evs=tlbPracticeSubEvents(hardStep);
+  return !!(evs && practiceSubStep < evs.length-1);
+}
+function lastPracticeSubStepForHardStep(step){
+  const evs=tlbPracticeSubEvents(step);
+  return evs ? Math.max(0, evs.length-1) : 0;
+}
+function advancePracticePointer(){
+  if(hasNextPracticeSubStep()){
+    practiceSubStep += 1;
+    return true;
+  }
+  if(hardStep<5){
+    hardStep += 1;
+    practiceSubStep = 0;
+    return true;
+  }
+  return false;
+}
+function isThunderPracticeStep(step=hardStep){
+  return isTlbPracticeTimeline() && step===1 && (practiceSubStep===0 || practiceSubStep===2);
+}
+function isTlbThunderPracticeStep(step=hardStep){
+  return isThunderPracticeStep(step);
+}
+function isTlbImplosionPracticeStep(step=hardStep){
+  return isTlbPracticeTimeline() && step===2;
+}
+function currentImplosionPracticeIndex(){
+  return isTlbImplosionPracticeStep() ? Math.min(practiceSubStep,1) : null;
+}
+function drawPracticeEventBanner(add){
+  if(!isPracticeView()) return;
+  const label=currentPracticeEventLabel();
+  if(!label) return;
+  const w=Math.max(240, Math.min(430, 116 + label.length*16));
+  const x=(600-w)/2;
+  add('rect',{x,y:20,width:w,height:34,rx:12,fill:'rgba(255,255,255,.055)',stroke:'rgba(255,255,255,.58)','stroke-width':1.4});
+  add('text',{x:300,y:42,fill:'#f5f7ff','font-size':15,'font-weight':800,'text-anchor':'middle'}).textContent=label;
+}
+
 function currentPracticeStepDuration(step=hardStep){
+  if(isTlbPracticeTimeline()){
+    const evs=tlbPracticeSubEvents(step);
+    if(evs) return (evs[Math.min(practiceSubStep, evs.length-1)] || evs[0]).duration;
+  }
   return practiceStepDurations[Math.min(step, practiceStepDurations.length-1)] || 5000;
 }
 function resetPracticeState(resetTime=true){
@@ -2047,9 +2252,10 @@ function resetPracticeState(resetTime=true){
   practiceStarted=false;
   practiceCountdown=0;
   practicePhase='idle';
+  practiceSubStep=0;
   practiceLastTs=0;
   practiceCountdownRemaining=3000;
-  practiceRevealRemaining=practiceAnswerDuration;
+  practiceRevealRemaining=currentPracticeRevealDuration();
   practiceFinishRemaining=practiceLogDuration;
   if(resetTime){
     practiceDuration=currentPracticeStepDuration();
@@ -2077,7 +2283,7 @@ function preparePracticeStep(resetSelections=true){
   practiceDuration=currentPracticeStepDuration();
   practiceTimeLeft=practiceDuration;
   practiceStepRemaining=practiceDuration;
-  practiceRevealRemaining=practiceAnswerDuration;
+  practiceRevealRemaining=currentPracticeRevealDuration();
   if(resetSelections){
     hardShowAnswer=false;
     hardSelectedChoice='';
@@ -2087,6 +2293,11 @@ function preparePracticeStep(resetSelections=true){
 }
 function normalizePracticeClicked(){
   if(hardStep===2){
+    const idx=currentImplosionPracticeIndex();
+    if(idx!==null){
+      const h=currentPracticeImplosionClick();
+      return h ? `${idx+1}回目=${implosionRegionShort(h.clicked)}側` : '未回答';
+    }
     return hardImplosionClicks.length ? hardImplosionClicks.map((h,i)=>`${i+1}回目=${implosionRegionShort(h.clicked)}側`).join(' / ') : '未回答';
   }
   return hardSelectedChoice || '未回答';
@@ -2098,7 +2309,7 @@ function updatePracticeLiveVisuals(){
     const fill = practiceTopArea.querySelector('.practiceFill');
     if(fill) fill.style.width = `${pct}%`;
     const meta = practiceTopArea.querySelector('.practiceMeta span');
-    if(meta) meta.innerHTML = `<b>実践練習</b> / ${practiceStateText()}`;
+    if(meta) meta.innerHTML = `<b>実践練習</b> / ${practiceStateText()} / ${currentPracticeEventLabel()}`;
   }
   if(practiceCenterOverlay && practicePhase==='countdown'){
     const countdownText = practiceCenterOverlay.querySelector('.practiceCountdownText');
@@ -2113,9 +2324,17 @@ function evaluatePracticeCurrentStep(){
   let clicked=normalizePracticeClicked();
   if(hardStep===2){
     const seq=implosionSafeSeq();
-    expected=`1回目=${seq[0]} → 2回目=${seq[1]}`;
-    ok = hardImplosionClicks.length===2 && hardImplosionClicks.every(x=>x.ok);
-    hardClicks[hardStep] = {clicked, expected, ok};
+    const idx=currentImplosionPracticeIndex();
+    if(idx!==null){
+      const h=currentPracticeImplosionClick();
+      expected=`${idx+1}回目=${seq[idx]}`;
+      ok = !!(h && h.ok);
+      hardClicks[hardStep] = {clicked, expected, ok};
+    } else {
+      expected=`1回目=${seq[0]} → 2回目=${seq[1]}`;
+      ok = hardImplosionClicks.length===2 && hardImplosionClicks.every(x=>x.ok);
+      hardClicks[hardStep] = {clicked, expected, ok};
+    }
   } else {
     expected = hardExpectedChoice(hardStep);
     ok = hardSelectedChoice===expected;
@@ -2153,14 +2372,13 @@ function stepPracticeLoop(ts){
     if(practiceStepRemaining<=0){
       evaluatePracticeCurrentStep();
       practicePhase='reveal';
-      practiceRevealRemaining=practiceAnswerDuration;
+      practiceRevealRemaining=currentPracticeRevealDuration();
       needFullRender=true;
     }
   } else if(practicePhase==='reveal'){
     practiceRevealRemaining = Math.max(0, practiceRevealRemaining - delta);
     if(practiceRevealRemaining<=0){
-      if(hardStep<5){
-        hardStep += 1;
+      if(advancePracticePointer()){
         preparePracticeStep(true);
         practicePhase='active';
       } else {
@@ -2225,6 +2443,7 @@ function practiceGoNext(){
   practicePaused=false;
   practiceLogs=[];
   hardStep=0;
+  practiceSubStep=0;
   hardClicks=[];
   hardImplosionClicks=[];
   hardShowAnswer=false;
@@ -2246,7 +2465,8 @@ function practiceRetrySame(){
 function practicePrevStep(){
   clearPracticeTimers();
   practiceRunning=false; practicePaused=false;
-  if(hardStep>0) hardStep--;
+  if(practiceSubStep>0) practiceSubStep--;
+  else if(hardStep>0){ hardStep--; practiceSubStep=lastPracticeSubStepForHardStep(hardStep); }
   preparePracticeStep(true);
   practicePhase='idle';
   renderAll();
